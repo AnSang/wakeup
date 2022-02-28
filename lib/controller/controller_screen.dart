@@ -5,8 +5,8 @@ import 'package:wakeup/models/login_info.dart';
 class ScreenController extends GetxController {
   static const key = 'LoginInfo';
 
-  var autoLogin = false;
-  var showScreenIndex = 0;
+  var autoLogin = false.obs;
+  var showScreenIndex = 0.obs;
 
   late SharedPreferences pref;
   late LoginInfo info;
@@ -18,7 +18,7 @@ class ScreenController extends GetxController {
   }
 
   void setScreen(int index) {
-    showScreenIndex = index;
+    showScreenIndex = index.obs;
     update();
   }
 }
