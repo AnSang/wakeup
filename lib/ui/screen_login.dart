@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:wakeup/stringword.dart';
 import 'package:wakeup/ui/screen_main.dart';
 
@@ -61,8 +64,14 @@ class ScreenLogin extends StatelessWidget {
     return Align(
       alignment: Alignment(0 , 1),
       child: MaterialButton(
-        onPressed: () {
-          Get.off(() => ScreenMain());
+        onPressed: () async {
+          // Future<UserCredential> val = signInWithGoogle();
+          Future<void> val = signInWithKakao();
+          /*if (val == null) {
+            print('null');
+          } else {
+            Get.off(() => ScreenMain());
+          }*/
         },
         child: Container(
           width: MediaQuery.of(_context).size.width / 10 * 6,
@@ -92,5 +101,23 @@ class ScreenLogin extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  //////////////// Sign In Method //////////////////
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<void> signInWithKakao() async {
+    KakaoContext.clientId = 'aa2066b021be69a35115d04dfbffb4bb';
+    String authCode = await AuthCodeClient.instance.request();
+    print(authCode);
   }
 }
