@@ -1,3 +1,4 @@
+import 'package:d_button/d_button.dart';
 import 'package:flutter/material.dart';
 
 class ScreenAlarm extends StatelessWidget {
@@ -5,11 +6,17 @@ class ScreenAlarm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('This is Alarm Screen',
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: 35
-        )
-    );
+    return Column(
+        children: [
+          Expanded(child: SizedBox()),  //Todo Alarm ListView 추가
+          DButtonCircle(          // 알람 추가 버튼
+            mainColor: Colors.white,
+            diameter: 40,
+            child: Icon( Icons.add, color: Colors.black ),
+            onClick: () {},
+          ),
+          SizedBox(height: 10)
+        ],
+      );
   }
 }
