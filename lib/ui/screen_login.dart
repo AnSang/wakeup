@@ -67,10 +67,11 @@ class ScreenLogin extends StatelessWidget {
       child: MaterialButton(
         onPressed: () async {
           // Future<UserCredential> val = signInWithGoogle();
-          KakaoContext.clientId = 'aa2066b021be69a35115d04dfbffb4bb';
-          controller.isKakaoInstalled ? _loginWithTalk() : _loginWithKakao();
 
-          // Get.off(() => ScreenMain());
+          // KakaoContext.clientId = 'aa2066b021be69a35115d04dfbffb4bb';
+          // controller.isKakaoInstalled ? _loginWithTalk() : _loginWithKakao();
+
+          Get.off(() => ScreenMain());
         },
         child: Container(
           width: MediaQuery.of(_context).size.width / 10 * 6,
