@@ -10,7 +10,15 @@ final ScreenController controller = Get.put(ScreenController());
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyC1U5zudqsAz8iSTt7t50mOKs4D42oWWPw',
+          appId: 'com.example.wakeup_web',  // com.example.self_check <- 로 지정하면 Android App Name과 같아서 에러 나타남
+          projectId: 'self-check-952f6',
+          messagingSenderId: 'Sender_Ansang'
+      )
+    //Todo : messagingSenderId 의 기능 파악하기
+  );
 
   runApp(const ScreenManage());
 }
