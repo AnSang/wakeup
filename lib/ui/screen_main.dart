@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wakeup/controller/controller_main.dart';
+import 'package:wakeup/strings.dart';
 
 final MainController controller = Get.put(MainController());
 
@@ -25,10 +26,10 @@ class ScreenMain extends StatelessWidget {
                 currentIndex: controller.showScreenIndex,
                 onTap: (index) { controller.setScreen(index); },
                 items: [
-                  BottomNavigationBarItem(label:'시간', icon: Icon(Icons.punch_clock_outlined)),
-                  BottomNavigationBarItem(label:'알람', icon: Icon(Icons.lock_clock)),
-                  BottomNavigationBarItem(label:'기록', icon: Icon(Icons.bar_chart)),
-                  BottomNavigationBarItem(label:'정보', icon: Icon(Icons.account_circle_outlined)),
+                  BottomNavigationBarItem(label:Word.CLOCK, icon: Icon(Icons.punch_clock_outlined)),
+                  BottomNavigationBarItem(label:Word.ALARM, icon: Icon(Icons.lock_clock)),
+                  BottomNavigationBarItem(label:Word.RECORD, icon: Icon(Icons.bar_chart)),
+                  BottomNavigationBarItem(label:Word.INFO, icon: Icon(Icons.account_circle_outlined)),
                 ],
               )
           );

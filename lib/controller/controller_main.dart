@@ -8,7 +8,6 @@ import 'package:wakeup/ui/screen_record.dart';
 class MainController extends GetxController {
   static const key = 'Main';
   List screens = [ ScreenClock(), ScreenAlarm(), ScreenRecord(), ScreenInfo() ]; // Screen List
-  List menus = [ '시계', '알람', '정보', '기록' ];            // Menu List
 
   var showScreenIndex = 0;            // Screen List, Menu List   Index
 
