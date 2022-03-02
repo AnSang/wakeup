@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:wakeup/controller/controller_main.dart';
 import 'package:wakeup/strings.dart';
 
@@ -15,23 +16,28 @@ class ScreenMain extends StatelessWidget {
         builder: (controller) {
           return Scaffold(
             backgroundColor: Colors.black,
-            body: controller.screens[controller.showScreenIndex],
-              bottomNavigationBar: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: Colors.black,
-                selectedItemColor: Colors.white,
-                unselectedItemColor: Colors.white.withOpacity(.40),
-                selectedFontSize: 12,
-                unselectedFontSize: 12,
-                currentIndex: controller.showScreenIndex,
-                onTap: (index) { controller.setScreen(index); },
-                items: [
-                  BottomNavigationBarItem(label:Word.CLOCK, icon: Icon(Icons.punch_clock_outlined)),
-                  BottomNavigationBarItem(label:Word.ALARM, icon: Icon(Icons.lock_clock)),
-                  BottomNavigationBarItem(label:Word.RECORD, icon: Icon(Icons.bar_chart)),
-                  BottomNavigationBarItem(label:Word.INFO, icon: Icon(Icons.account_circle_outlined)),
+            body: Column(
+              mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded( child: controller.screens[controller.showScreenIndex] ),  // 교체되는 화면
+                  Container( color: Colors.white, height: 0.3 )                       // BottomNavigationbar 경계선
                 ],
-              )
+              ),
+            bottomNavigationBar: SalomonBottomBar(
+              margin: EdgeInsets.symmetric(horizontal: 30),
+              selectedColorOpacity: 0.15,
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.white.withOpacity(.60),
+              currentIndex: controller.showScreenIndex,
+              onTap: (index) { controller.setScreen(index); },
+              items: [
+                SalomonBottomBarItem(title:Text(Word.CLOCK), icon: Icon(Icons.punch_clock_outlined), selectedColor: Colors.cyanAccent),
+                SalomonBottomBarItem(title:Text(Word.ALARM), icon: Icon(Icons.lock_clock), selectedColor: Colors.cyanAccent),
+                SalomonBottomBarItem(title:Text(Word.RECORD), icon: Icon(Icons.bar_chart), selectedColor: Colors.cyanAccent),
+                SalomonBottomBarItem(title:Text(Word.INFO), icon: Icon(Icons.account_circle_outlined), selectedColor: Colors.cyanAccent),
+              ],
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endTop
           );
         }
     );
