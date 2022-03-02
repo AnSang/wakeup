@@ -16,7 +16,7 @@ class LoginController extends GetxController {
   @override
   void onInit() async {
     pref = await SharedPreferences.getInstance();
-    isKakaoInstalled = await isKakaoTalkInstalled();
+    // isKakaoInstalled = await isKakaoTalkInstalled();
     super.onInit();
   }
 
