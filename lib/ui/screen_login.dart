@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:kakao_flutter_sdk/all.dart';
-import 'package:wakeup/stringword.dart';
+import 'package:wakeup/strings.dart';
 import 'package:wakeup/ui/screen_main.dart';
+
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 
 import '../controller/controller_login.dart';
 
@@ -66,12 +67,10 @@ class ScreenLogin extends StatelessWidget {
       child: MaterialButton(
         onPressed: () async {
           // Future<UserCredential> val = signInWithGoogle();
-          Future<void> val = signInWithKakao();
-          /*if (val == null) {
-            print('null');
-          } else {
-            Get.off(() => ScreenMain());
-          }*/
+          KakaoContext.clientId = 'aa2066b021be69a35115d04dfbffb4bb';
+          controller.isKakaoInstalled ? _loginWithTalk() : _loginWithKakao();
+
+          // Get.off(() => ScreenMain());
         },
         child: Container(
           width: MediaQuery.of(_context).size.width / 10 * 6,
@@ -115,9 +114,54 @@ class ScreenLogin extends StatelessWidget {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  Future<void> signInWithKakao() async {
+  Future<String> signInWithKakao() async {
     KakaoContext.clientId = 'aa2066b021be69a35115d04dfbffb4bb';
-    String authCode = await AuthCodeClient.instance.request();
-    print(authCode);
+    return await AuthCodeClient.instance.request();
+  }
+
+
+  _issueAccessToken(String authCode) async {
+    try {
+      // const keyHash = 'hmNYgOU/ytmn0MQoIJehlSPa7qg=';
+      var token = await AuthApi.instance.issueAccessToken(authCode);
+      var val = DefaultTokenManager().setToken(token);
+      var aaa = _getUser();
+      print(aaa);
+      Get.off(() => ScreenMain());
+    } catch (e) {
+      print('error on issuing access token: $e');
+    }
+  }
+
+  _loginWithKakao() async {
+    try {
+      var code = await AuthCodeClient.instance.request();
+      await _issueAccessToken(code);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _loginWithTalk() async {
+    try {
+      var code = await AuthCodeClient.instance.requestWithTalk();
+      await _issueAccessToken(code);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<bool> _getUser() async {
+    try {
+      var user = await UserApi.instance.me();
+      print(user.toString());
+      return true;
+    } on KakaoAuthException catch (e) {
+      print(e);
+      return false;
+    } catch (e) {
+      print(e);
+      return true;
+    }
   }
 }
