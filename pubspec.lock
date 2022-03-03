@@ -85,6 +85,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.10"
+  day_night_time_picker:
+    dependency: "direct main"
+    description:
+      name: day_night_time_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   dio:
     dependency: transitive
     description:
@@ -504,6 +511,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  weekday_selector:
+    dependency: "direct main"
+    description:
+      name: weekday_selector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   win32:
     dependency: transitive
     description:
