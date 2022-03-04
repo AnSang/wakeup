@@ -1,7 +1,7 @@
 import 'package:d_button/d_button.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
@@ -61,20 +61,20 @@ class ScreenAlarm extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 15,
-                        spreadRadius: 5),
-                      ],
+                          color: Colors.black.withOpacity(0.3),
+                          blurRadius: 15,
+                          spreadRadius: 5),
+                    ],
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      createInlinePicker(
+                      createInlinePicker(   /// 시간 정하기
                         isOnChangeValueMode: true,
-                        onChange: (TimeOfDay) {  },
-                        value: TimeOfDay.now()
+                        value: controller.timeOfDay,
+                        onChange: (time) { controller.setTimeOfDay(time); },
                       ),
-                      WeekdaySelector(
+                      WeekdaySelector(    /// 요일 정하기
                           selectedFillColor: Colors.indigo.shade300,
                           onChanged: (int day) { controller.setDaySelect(day % 7); },
                           values: controller.daySelect
@@ -86,7 +86,11 @@ class ScreenAlarm extends StatelessWidget {
                           DButtonShadow(
                             mainColor: Colors.white,
                             splashColor: Colors.grey,
-                            onClick: () => { controller.setIsCreate(false) },
+                            onClick: () => {
+                              controller.initTimeOfDay(),
+                              controller.initDaySelect(),
+                              controller.setIsCreate(false)
+                            },
                             radius: 30,
                             height: 35,
                             child: Text(
@@ -101,7 +105,12 @@ class ScreenAlarm extends StatelessWidget {
                           DButtonShadow(
                             mainColor: Colors.white,
                             splashColor: Colors.grey,
-                            onClick: () => { controller.setIsCreate(false) },
+                            onClick: () => {
+                              controller.initTimeOfDay(),
+                              controller.initDaySelect(),
+                              controller.addAlarm(),
+                              controller.setIsCreate(false)
+                            },
                             radius: 30,
                             height: 35,
                             child: Text(
@@ -126,7 +135,7 @@ class ScreenAlarm extends StatelessWidget {
 
   Widget setListItem(BuildContext context, int index) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(3),
       margin: EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -138,18 +147,60 @@ class ScreenAlarm extends StatelessWidget {
               spreadRadius: 5),
         ],
       ),
-      child: Row(
-        children: [
-          Expanded(child: Container()),
-          Switch(
-              value: controller.alarmList[index].isRun,
-              onChanged: (val){
-                controller.setBool(index);
-          }),
-        ],
-      ),
+      child: Slidable(
+        child: Row(
+          children: [
+            Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                        controller.alarmList[index].time,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        letterSpacing: 3,
+                      ),
+                    ),
+                    WeekdaySelector(
+                        selectedFillColor: Colors.indigo.shade300,
+                        onChanged: (int day) { }, // 표시만 하기 위해 이벤트는 넣지 않음
+                        values: controller.alarmList[index].day,
+                      textStyle: TextStyle( fontSize: 12, color: Colors.black ),
+                      selectedTextStyle: TextStyle( fontSize: 12 ),
+                    )
+                  ],
+                )
+            ),
+            Switch(
+                value: controller.alarmList[index].isRun,
+                onChanged: (val){
+                  controller.setBool(index);
+            }),
+          ],
+        ),
 
-      //Text('Title : ${controller.alarmList[index].time}')
+        endActionPane: const ActionPane(
+          motion: ScrollMotion(),
+          children: [
+            SlidableAction(
+                onPressed: doNothing,
+                backgroundColor: Color(0xFF7BC043),
+                foregroundColor: Colors.white,
+                icon: Icons.archive,
+                label: 'Archive'
+            ),
+            SlidableAction(
+                onPressed: doNothing,
+                backgroundColor: Color(0xFF0392CF),
+                foregroundColor: Colors.white,
+                icon: Icons.save,
+                label: 'Save'
+            ),
+          ],
+        )
+      ),
     );
   }
 }
+void doNothing(BuildContext context) {}
