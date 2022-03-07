@@ -14,10 +14,12 @@ class ScreenAlarm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AlarmController>(
+    return
+      GetBuilder<AlarmController>(
       init: AlarmController(),
       builder: (controller) {
-        return Stack(
+        return
+          Stack(
           children: [
             Column(
               children: [
@@ -53,78 +55,80 @@ class ScreenAlarm extends StatelessWidget {
             ),
 
             if (controller.isAlarmCreate)
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(230, 230, 230, 1),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 15,
-                          spreadRadius: 5),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      createInlinePicker(   /// 시간 정하기
-                        isOnChangeValueMode: true,
-                        value: controller.timeOfDay,
-                        onChange: (time) { controller.setTimeOfDay(time); },
-                      ),
-                      WeekdaySelector(    /// 요일 정하기
-                          selectedFillColor: Colors.indigo.shade300,
-                          onChanged: (int day) { controller.setDaySelect(day % 7); },
-                          values: controller.daySelect
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          DButtonShadow(
-                            mainColor: Colors.white,
-                            splashColor: Colors.grey,
-                            onClick: () => {
-                              controller.initTimeOfDay(),
-                              controller.initDaySelect(),
-                              controller.setIsCreate(false)
-                            },
-                            radius: 30,
-                            height: 35,
-                            child: Text(
-                              "취소",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black
-                              ),
+              Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(230, 230, 230, 1),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 15,
+                        spreadRadius: 5),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    createInlinePicker(   /// 시간 정하기
+                      isOnChangeValueMode: true,
+                      value: controller.timeOfDay,
+                      onChange: (time) { controller.setTimeOfDay(time); },
+                    ),
+                    WeekdaySelector(    /// 요일 정하기
+                        selectedFillColor: Colors.indigo.shade300,
+                        onChanged: (int day) { controller.setDaySelect(day % 7); },
+                        values: controller.daySelect
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DButtonShadow(
+                          mainColor: Colors.white,
+                          splashColor: Colors.grey,
+                          onClick: () => {
+                            controller.initTimeOfDay(),
+                            controller.initDaySelect(),
+                            controller.setIsCreate(false)
+                          },
+                          radius: 30,
+                          height: 35,
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black
                             ),
                           ),
-                          SizedBox(width: 30),
-                          DButtonShadow(
-                            mainColor: Colors.white,
-                            splashColor: Colors.grey,
-                            onClick: () => {
-                              controller.initTimeOfDay(),
-                              controller.initDaySelect(),
-                              controller.addAlarm(),
-                              controller.setIsCreate(false)
+                        ),
+                        SizedBox(width: 30),
+                        DButtonShadow(
+                          mainColor: Colors.white,
+                          splashColor: Colors.grey,
+                          onClick: () => {
+                            if (controller.isAlarmModify == -1) {
+                              controller.addAlarm()
+                            } else {
+                              controller.mSave(controller.isAlarmModify)
                             },
-                            radius: 30,
-                            height: 35,
-                            child: Text(
-                              "등록",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black
-                              ),
+                            controller.initTimeOfDay(),
+                            controller.initDaySelect(),
+                            controller.setIsCreate(false)
+                          },
+                          radius: 30,
+                          height: 35,
+                          child: Text(
+                            "등록",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black
                             ),
                           ),
-                        ],
-                      )
-                    ],
-                  ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               )
           ],
@@ -153,6 +157,7 @@ class ScreenAlarm extends StatelessWidget {
             Expanded(
                 child: Column(
                   children: [
+                    SizedBox(height: 10),
                     Text(
                         controller.alarmList[index].time,
                       style: TextStyle(
@@ -162,45 +167,72 @@ class ScreenAlarm extends StatelessWidget {
                         letterSpacing: 3,
                       ),
                     ),
+                    SizedBox( height: 10 ),
                     WeekdaySelector(
                         selectedFillColor: Colors.indigo.shade300,
                         onChanged: (int day) { }, // 표시만 하기 위해 이벤트는 넣지 않음
                         values: controller.alarmList[index].day.cast<bool>(),
-                      textStyle: TextStyle( fontSize: 12, color: Colors.black ),
-                      selectedTextStyle: TextStyle( fontSize: 12 ),
-                    )
+                        textStyle: TextStyle( fontSize: 12, color: Colors.black ),
+                        selectedTextStyle: TextStyle( fontSize: 12 ),
+                    ),
+                    SizedBox(height: 10)
                   ],
                 )
             ),
             Switch(
                 value: controller.alarmList[index].isRun,
-                onChanged: (val){
-                  controller.setBool(index);
-            }),
+                onChanged: (val){ controller.setBool(index); }
+            ),
           ],
         ),
 
-        endActionPane: const ActionPane(
+        endActionPane: ActionPane(
           motion: ScrollMotion(),
           children: [
             SlidableAction(
-                onPressed: doNothing,
-                backgroundColor: Color(0xFF7BC043),
-                foregroundColor: Colors.white,
-                icon: Icons.archive,
-                label: 'Archive'
-            ),
-            SlidableAction(
-                onPressed: doNothing,
+                onPressed: (context) { controller.mModify(index); },
                 backgroundColor: Color(0xFF0392CF),
                 foregroundColor: Colors.white,
-                icon: Icons.save,
-                label: 'Save'
+                icon: Icons.app_registration,
+                label: 'Modify'
+            ),
+            SlidableAction(
+                onPressed: (context) {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          content: Text('삭제 하시겠습니까?'),
+                          actions: [
+                            TextButton(
+                                onPressed: () { Navigator.pop(context); },
+                                child: Text('취소')
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  controller.delAlarm(index);
+                                  Navigator.pop(context);
+                                },
+                                child: Text('확인')
+                            )
+                          ],
+                        );
+                      }
+                  );
+                    // onWillPop: (val) => { controller.delAlarm(index); }
+                },
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                icon: Icons.delete_forever,
+                label: 'Delete'
             ),
           ],
         )
       ),
     );
   }
+
 }
-void doNothing(BuildContext context) {}

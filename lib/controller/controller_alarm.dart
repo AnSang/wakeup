@@ -12,6 +12,7 @@ class AlarmController extends GetxController {
   late List<AlarmInfo> alarmList;
   late List<bool> daySelect;
   var isAlarmCreate = false;
+  var isAlarmModify = -1;
 
   @override
   void onInit() {
@@ -19,6 +20,27 @@ class AlarmController extends GetxController {
     alarmList = setAlarmList();
     daySelect = List.filled(7, false);
     super.onInit();
+  }
+
+  void mModify(int index) { // 알람 수정화면 띄우기
+    isAlarmCreate = true;
+    isAlarmModify = index;
+    timeOfDay = TimeOfDay(hour: int.parse(alarmList[index].time.split(':')[0]), minute: int.parse(alarmList[index].time.split(':')[1]));
+    daySelect = alarmList[index].day.cast<bool>();
+    update();
+  }
+
+  void mSave(int index) { // 알람 수정화면 > 등록
+    String time = timeOfDay.toString().substring(10,15);
+    alarmList[index] = (AlarmInfo(time: time, day: daySelect.toList(), isRun: true));
+    pref.setString(key, jsonEncode(alarmList));
+
+    // init
+    isAlarmCreate = false;
+    isAlarmModify = -1;
+    initTimeOfDay();
+    initDaySelect();
+    update();
   }
 
 /////////////// init /////////////////////
@@ -33,7 +55,15 @@ class AlarmController extends GetxController {
   }
 ////////////// add /////////////////////
   void addAlarm() {
-    alarmList.add(AlarmInfo(time: timeOfDay.toString(), day: daySelect, isRun: true));
+    String time = timeOfDay.toString().substring(10,15);
+
+    alarmList.add(AlarmInfo(time: time, day: daySelect.toList(), isRun: true));
+    pref.setString(key, jsonEncode(alarmList));
+    update();
+  }
+////////////// delete /////////////////////
+  void delAlarm(int index) {
+    alarmList.removeAt(index);
     pref.setString(key, jsonEncode(alarmList));
     update();
   }
@@ -46,6 +76,7 @@ class AlarmController extends GetxController {
 
   void setBool(int index) {
     alarmList[index].isRun = !alarmList[index].isRun;
+    pref.setString(key, jsonEncode(alarmList));
     update();
   }
 
