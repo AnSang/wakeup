@@ -165,7 +165,7 @@ class ScreenAlarm extends StatelessWidget {
                     WeekdaySelector(
                         selectedFillColor: Colors.indigo.shade300,
                         onChanged: (int day) { }, // 표시만 하기 위해 이벤트는 넣지 않음
-                        values: controller.alarmList[index].day,
+                        values: controller.alarmList[index].day.cast<bool>(),
                       textStyle: TextStyle( fontSize: 12, color: Colors.black ),
                       selectedTextStyle: TextStyle( fontSize: 12 ),
                     )

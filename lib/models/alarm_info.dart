@@ -1,6 +1,6 @@
 class AlarmInfo {
   final String time;
-  final List<bool> day;
+  final List<dynamic> day;
   bool isRun = false;
 
   AlarmInfo({
@@ -12,7 +12,7 @@ class AlarmInfo {
   AlarmInfo.fromJson(Map<String, dynamic> json)
       : this(
         time: json['time']! as String,
-        day: json['day']!,
+        day: json['day']! as List<dynamic>,
         isRun: json['isRun']! as bool
   );
 
