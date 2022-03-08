@@ -37,13 +37,15 @@ dependencies:
 
   #Util
   get: ^4.6.1
+  intl: ^0.17.0
   fluttertoast: ^8.0.8
   shared_preferences: ^2.0.13
-  salomon_bottom_bar: ^3.2.0      #BottomNavigationBar
-  d_button: ^0.0.10               #Button
-  weekday_selector: ^1.0.0        #WeekDay Select
-  day_night_time_picker: ^1.0.5   #Time Picker
-  flutter_slidable: ^1.2.0        #Slidable
+  salomon_bottom_bar: ^3.2.0          #BottomNavigationBar
+  d_button: ^0.0.10                   #Button
+  weekday_selector: ^1.0.0            #WeekDay Select
+  day_night_time_picker: ^1.0.5       #Time Picker
+  flutter_slidable: ^1.2.0            #Slidable
+  flutter_local_notifications: ^9.4.0 #notifications
 
   # FireBase
   cloud_firestore: ^3.1.8
