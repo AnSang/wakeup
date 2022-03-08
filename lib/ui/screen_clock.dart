@@ -16,9 +16,9 @@ class ScreenClock extends StatelessWidget {
           body: Container(
             padding: EdgeInsets.all(32),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 20),
                 Text(
                   controller.formattedTime,
                   style: TextStyle(color: Colors.white, fontSize: 50),
@@ -27,6 +27,8 @@ class ScreenClock extends StatelessWidget {
                   controller.formattedDate,
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
+
+                SizedBox( height: 40 ),
 
                 Container(
                   width: 300,
@@ -40,6 +42,7 @@ class ScreenClock extends StatelessWidget {
                 ),
 
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.language,
@@ -71,7 +74,7 @@ class ClockPainter extends CustomPainter {
     var center = Offset(centerX, centerY);
     var radius = min(centerX, centerY);
 
-    var fillBrush = Paint() ..color = Color(0xFF444974);
+    var fillBrush = Paint() ..color = Color(0xFF404040);
 
     var outlineBrush = Paint()
       ..color = Color(0xFFEAECFF)
@@ -104,7 +107,7 @@ class ClockPainter extends CustomPainter {
       ..color = Colors.white
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 2;
+      ..strokeWidth = 1;
 
     canvas.drawCircle(center, radius - 20, fillBrush);
     canvas.drawCircle(center, radius - 20, outlineBrush);
@@ -125,7 +128,7 @@ class ClockPainter extends CustomPainter {
 
     var outerCircleRadius = radius - 20;
     var innerCircleRadius = radius - 40;
-    for (double i = 0; i < 360; i += 12) {
+    for (double i = 0; i < 360; i += 30) {
       var x1 = centerX + outerCircleRadius * cos(i * pi / 180);
       var y1 = centerX + outerCircleRadius * sin(i * pi / 180);
 
