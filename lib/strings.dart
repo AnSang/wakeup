@@ -3,6 +3,7 @@ class Word {
   static const String PATH_IMAGE1 = 'image/image1.jpg';
   static const String PATH_IMAGE2 = 'image/image2.jpg';
   static const String PATH_IMAGE3 = 'image/image3.jpg';
+  static const String PATH_ADD_ALARM = 'image/add_alarm.png';
 
   static const String CLOCK   = '시계';
   static const String ALARM   = '알람';
