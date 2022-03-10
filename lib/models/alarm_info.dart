@@ -1,9 +1,11 @@
 class AlarmInfo {
-  final String time;
-  final List<dynamic> day;
+  int index;
+  String time;
+  List<dynamic> day;
   bool isRun = false;
 
   AlarmInfo({
+    required this.index,
     required this.time,
     required this.day,
     required this.isRun
@@ -11,6 +13,7 @@ class AlarmInfo {
 
   AlarmInfo.fromJson(Map<String, dynamic> json)
       : this(
+        index: json['index']! as int,
         time: json['time']! as String,
         day: json['day']! as List<dynamic>,
         isRun: json['isRun']! as bool
@@ -18,6 +21,7 @@ class AlarmInfo {
 
   Map<String, dynamic> toJson() {
     return {
+      'index' : index,
       'time' : time,
       'day' : day,
       'isRun' : isRun
@@ -26,6 +30,6 @@ class AlarmInfo {
 
   @override
   String toString() {
-    return '"AlarmInfo" : { "time": $time, "day": $day, "isRun" : $isRun}';
+    return '"AlarmInfo" : { "index": $index, "time": $time, "day": $day, "isRun" : $isRun}';
   }
 }

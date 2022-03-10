@@ -10,9 +10,11 @@ class AlarmController extends GetxController {
 
   late TimeOfDay timeOfDay;
   late List<AlarmInfo> alarmList;
-  late List<bool> daySelect;
+  var daySelect = List.filled(7, false);
   var isAlarmCreate = false;
   var isAlarmModify = -1;
+  var alarmTimeString = '';
+  var alarmTime = DateTime.now();
 
   @override
   void onInit() {
@@ -32,7 +34,7 @@ class AlarmController extends GetxController {
 
   void mSave(int index) { // 알람 수정화면 > 등록
     String time = timeOfDay.toString().substring(10,15);
-    alarmList[index] = (AlarmInfo(time: time, day: daySelect.toList(), isRun: true));
+    alarmList[index] = (AlarmInfo(index: index, time: time, day: daySelect.toList(), isRun: true));
     pref.setString(key, jsonEncode(alarmList));
 
     // init
@@ -55,17 +57,35 @@ class AlarmController extends GetxController {
   }
 ////////////// add /////////////////////
   void addAlarm() {
-    String time = timeOfDay.toString().substring(10,15);
-
-    alarmList.add(AlarmInfo(time: time, day: daySelect.toList(), isRun: true));
+    alarmList.add(AlarmInfo(index: alarmList.length, time: alarmTimeString, day: daySelect.toList(), isRun: true));
     pref.setString(key, jsonEncode(alarmList));
     update();
   }
 ////////////// delete /////////////////////
   void delAlarm(int index) {
     alarmList.removeAt(index);
+    for (int i = 0; i < alarmList.length; i++) {  // 인덱스 재정렬
+      alarmList[i].index = i;
+    }
+
     pref.setString(key, jsonEncode(alarmList));
     update();
+  }
+////////////// Get /////////////////////
+  String getDays(int index) {
+    String day = '';
+    for (int i = 0; i < alarmList[index].day.length; i++) {
+      if (alarmList[index].day[i]) {
+        if (i == 0) day += '일 ';
+        else if (i == 1) day += '월 ';
+        else if (i == 2) day += '화 ';
+        else if (i == 3) day += '수 ';
+        else if (i == 4) day += '목 ';
+        else if (i == 5) day += '금 ';
+        else if (i == 6) day += '토 ';
+      }
+    }
+    return day;
   }
 
 ////////////// Set /////////////////////
@@ -109,7 +129,7 @@ class AlarmController extends GetxController {
     }
   }
 
-  void setInstance() {
+  /*void setInstance() {
     alarmList.clear();
     alarmList.add(AlarmInfo(time: '14:42', day: List.filled(7, false), isRun: false));
     alarmList.add(AlarmInfo(time: '06:11', day: List.filled(7, true), isRun: true));
@@ -120,5 +140,5 @@ class AlarmController extends GetxController {
     alarmList.add(AlarmInfo(time: '09:42', day: List.filled(7, false), isRun: false));
     alarmList.add(AlarmInfo(time: '14:42', day: List.filled(7, false), isRun: false));
     update();
-  }
+  }*/
 }
