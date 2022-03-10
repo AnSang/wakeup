@@ -46,6 +46,7 @@ dependencies:
   day_night_time_picker: ^1.0.5       #Time Picker
   flutter_slidable: ^1.2.0            #Slidable
   flutter_local_notifications: ^9.4.0 #notifications
+  dotted_border: ^2.0.0+2
 
   # FireBase
   cloud_firestore: ^3.1.8
