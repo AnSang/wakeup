@@ -51,55 +51,13 @@ class ScreenLogin extends StatelessWidget {
                   ),
                 ),
               ),*/
-              setButton(40),
-              setButton(90),
-              setButton(140),
-              setButton(190),
+              LoginButton(onPressed: (){}, margin: 40, buttonName: '카카오톡 로그인하기'),
+              LoginButton(onPressed: (){}, margin: 90, buttonName: '카카오톡 로그인하기'),
+              LoginButton(onPressed: (){}, margin: 140, buttonName: '카카오톡 로그인하기'),
+              LoginButton(onPressed: (){}, margin: 190, buttonName: '카카오톡 로그인하기')
             ],
           );
         }
-    );
-  }
-
-  Widget setButton(double margin) {
-    return Align(
-      alignment: Alignment(0 , 1),
-      child: MaterialButton(
-        onPressed: () async {
-          // Future<UserCredential> val = signInWithGoogle();
-
-          // KakaoContext.clientId = 'aa2066b021be69a35115d04dfbffb4bb';
-          // controller.isKakaoInstalled ? _loginWithTalk() : _loginWithKakao();
-
-          Get.off(() => ScreenMain());
-        },
-        child: Container(
-          width: MediaQuery.of(_context).size.width / 10 * 6,
-          height: 40,
-          margin: EdgeInsets.only(bottom: margin),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 15,
-                    spreadRadius: 5
-                )
-              ]
-          ),
-          child: Align(
-            alignment: Alignment(0 , 0),
-            child: Text(
-              '카카오톡 로그인 하기',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -165,4 +123,61 @@ class ScreenLogin extends StatelessWidget {
       return true;
     }
   }
+}
+
+class LoginButton extends StatelessWidget {
+  LoginButton({Key? key,
+    required this.onPressed,
+    required this.margin,
+    required this.buttonName
+  }) : super(key: key);
+
+  final VoidCallback onPressed;
+  final double margin;
+  final String buttonName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment(0 , 1),
+      child: MaterialButton(
+        onPressed: () async {
+          // Future<UserCredential> val = signInWithGoogle();
+
+          // KakaoContext.clientId = 'aa2066b021be69a35115d04dfbffb4bb';
+          // controller.isKakaoInstalled ? _loginWithTalk() : _loginWithKakao();
+
+          Get.off(() => ScreenMain());
+          onPressed;
+        },
+        child: Container(
+          width: MediaQuery.of(_context).size.width / 10 * 6,
+          height: 40,
+          margin: EdgeInsets.only(bottom: margin),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 15,
+                    spreadRadius: 5
+                )
+              ]
+          ),
+          child: Align(
+            alignment: Alignment(0 , 0),
+            child: Text(
+              buttonName,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
 }
