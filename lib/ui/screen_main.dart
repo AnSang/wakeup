@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:wakeup/controller/controller_main.dart';
-import 'package:wakeup/strings.dart';
+import 'package:wakeup/utils/strings.dart';
 
 final MainController controller = Get.put(MainController());
 

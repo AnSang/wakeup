@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
 import '../controller/controller_alarm.dart';
-import '../custom_colors.dart';
+import '../utils/custom_colors.dart';
 
 final AlarmController controller = Get.put(AlarmController());
 

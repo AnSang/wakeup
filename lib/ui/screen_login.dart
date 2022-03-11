@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wakeup/strings.dart';
+import 'package:wakeup/utils/strings.dart';
 import 'package:wakeup/ui/screen_main.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
