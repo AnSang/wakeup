@@ -7,7 +7,7 @@ class ClockController extends GetxController {
   var formattedTime = DateFormat('HH:mm').format(DateTime.now());
   var formattedDate = DateFormat('EEE, d MMM').format(DateTime.now());
   var timezoneString = DateTime.now().timeZoneOffset.toString().split('.').first;
-  var offsetSign = '';
+  var offsetSign = '+';
 
   @override
   void onInit() {
