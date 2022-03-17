@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:time_chart/time_chart.dart';
 import 'package:wakeup/controller/controller_record.dart';
 
+import '../utils/strings.dart';
+
 class ScreenRecord extends StatelessWidget {
   const ScreenRecord({Key? key}) : super(key: key);
 
@@ -59,6 +61,8 @@ class ScreenRecord extends StatelessWidget {
                       data: controller.showItems,
                       chartType: ChartType.time,
                       viewMode: ViewMode.monthly,
+                      tooltipStart: Word.SLEEP_START,
+                      tooltipEnd: Word.SLEEP_END,
                       height: MediaQuery.of(context).size.height * 2 / 3,
                       barColor: Colors.deepPurple,
                     );
