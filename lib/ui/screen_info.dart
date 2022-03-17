@@ -52,33 +52,79 @@ class ScreenInfo extends StatelessWidget {
                               onClick: () => { Fluttertoast.showToast(msg: '눌러졌음') },
                           ),
                         )
+                      ),
+                      Align(
+                        alignment: Alignment(0, 1),
+                        child: Text(
+                          '${controller.userName} 님의 총 수면기록 ${controller.recordCount}회',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        )
                       )
                     ],
                   )
               ),
+              SizedBox( height: 30 ),
               Expanded(
                   flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text('${controller.userName} 님의 총 수면기록 ${controller.recordCount}회',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                      SizedBox( height: 30 ),
-                      ListView(
-                        children: [
-                          ListTile(),
-                          ListTile(),
-                          ListTile(),
-                        ],
-                      )
-                    ],
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InfoMenuButton(buttonName: 'Menu1'),
+                        SizedBox( height: 20 ),
+                        InfoMenuButton(buttonName: '소리 크기'),
+                        SizedBox( height: 20 ),
+                        InfoMenuButton(buttonName: '알람 소리'),
+                        SizedBox( height: 20 ),
+                        InfoMenuButton(buttonName: '로그아웃'),
+                      ],
+                    ),
                   )
               )
             ],
           ),
         );
       }
+    );
+  }
+}
+
+class InfoMenuButton extends StatelessWidget {
+  InfoMenuButton({Key? key,
+    required this.buttonName
+  }) : super(key: key);
+
+  final String buttonName;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return DButtonShadow(
+        height: 60,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
+        mainColor: Colors.black,
+        shadowColor: Colors.grey,
+        splashColor: Colors.grey,
+        radius: 15,
+        onClick: () {},
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            SizedBox(width: 15),
+            Text(
+              buttonName,
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
+            Expanded(child: SizedBox()),
+            Icon(Icons.chevron_right, color: Colors.white),
+            SizedBox(width: 15)
+          ],
+        )
     );
   }
 }
