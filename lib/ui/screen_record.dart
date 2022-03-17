@@ -43,7 +43,7 @@ class ScreenRecord extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     Text( controller.getMonth(controller.showDate),
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle( fontSize: 15, color: Colors.white),
                     ),
                     SizedBox(width: 10),
                     IconButton(onPressed: () { controller.plusMonth(); },
