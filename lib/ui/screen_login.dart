@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
 import 'package:wakeup/utils/strings.dart';
 import 'package:wakeup/ui/screen_main.dart';
 
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../controller/controller_login.dart';
 
@@ -32,45 +33,63 @@ class ScreenLogin extends StatelessWidget {
                 alignment: Alignment(0 , -1),
                 child: Image(image: AssetImage(Word.PATH_IMAGE2)),  // 배경 이미지 경로
               ),
-              /*Align(
-                alignment: Alignment(0 , 1),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 10 * 6,
-                  height: MediaQuery.of(context).size.height / 10 * 3,
-                  margin: EdgeInsets.only(bottom: 40),
-                  decoration: BoxDecoration(
-                      color: Colors.white30,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 15,
-                            spreadRadius: 5
-                        )
-                      ]
-                  ),
-                ),
-              ),*/
-              LoginButton(onPressed: (){}, margin: 40, buttonName: '카카오톡 로그인하기'),
-              LoginButton(onPressed: (){}, margin: 90, buttonName: '카카오톡 로그인하기'),
-              LoginButton(onPressed: (){}, margin: 140, buttonName: '카카오톡 로그인하기'),
-              LoginButton(onPressed: (){}, margin: 190, buttonName: '카카오톡 로그인하기')
+              LoginButton( btnType: Buttons.GitHub, margin: 190, onPressed: (){} ),
+              LoginButton( btnType: Buttons.Apple, margin: 140, onPressed: (){} ),
+              LoginButton( btnType: Buttons.Facebook, margin: 90,  onPressed: (){} ),
+              LoginButton( btnType: Buttons.Google, margin: 40,  onPressed: (){} ),
             ],
           );
         }
     );
   }
+}
 
-  //////////////// Sign In Method //////////////////
-  Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
+class LoginButton extends StatelessWidget {
+  LoginButton({Key? key,
+    required this.btnType,
+    required this.onPressed,
+    required this.margin,
+  }) : super(key: key);
+
+  final Buttons btnType;
+  final VoidCallback onPressed;
+  final double margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment(0 , 1),
+      child: MaterialButton(
+        onPressed: () async {
+          controller.loginGoogle();
+        },
+        child: Container(
+          width: MediaQuery.of(_context).size.width / 10 * 6,
+          height: 40,
+          margin: EdgeInsets.only(bottom: margin),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 15,
+                    spreadRadius: 5
+                )
+              ]
+          ),
+          child: Align(
+            alignment: Alignment(0 , 0),
+            child: SignInButton(
+              btnType,
+              onPressed: (){
+                controller.loginGoogle();
+              },
+            )
+          ),
+        ),
+      ),
     );
-
-    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   Future<String> signInWithKakao() async {
@@ -125,59 +144,6 @@ class ScreenLogin extends StatelessWidget {
   }
 }
 
-class LoginButton extends StatelessWidget {
-  LoginButton({Key? key,
-    required this.onPressed,
-    required this.margin,
-    required this.buttonName
-  }) : super(key: key);
-
-  final VoidCallback onPressed;
-  final double margin;
-  final String buttonName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment(0 , 1),
-      child: MaterialButton(
-        onPressed: () async {
-          // Future<UserCredential> val = signInWithGoogle();
-
-          // KakaoContext.clientId = 'aa2066b021be69a35115d04dfbffb4bb';
-          // controller.isKakaoInstalled ? _loginWithTalk() : _loginWithKakao();
-
-          Get.off(() => ScreenMain());
-          onPressed;
-        },
-        child: Container(
-          width: MediaQuery.of(_context).size.width / 10 * 6,
-          height: 40,
-          margin: EdgeInsets.only(bottom: margin),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 15,
-                    spreadRadius: 5
-                )
-              ]
-          ),
-          child: Align(
-            alignment: Alignment(0 , 0),
-            child: Text(
-              buttonName,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
+void _setLoggingIn(bool loggin, String errMsg) {
+  Fluttertoast.showToast(msg: '눌러졌음');
 }
