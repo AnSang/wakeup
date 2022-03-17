@@ -31,8 +31,8 @@ class ScreenMain extends StatelessWidget {
               currentIndex: controller.showScreenIndex,
               onTap: (index) { controller.setScreen(index); },
               items: [
-                SalomonBottomBarItem(title:Text(Word.CLOCK), icon: Icon(Icons.punch_clock_outlined), selectedColor: Colors.cyanAccent),
-                SalomonBottomBarItem(title:Text(Word.ALARM), icon: Icon(Icons.lock_clock), selectedColor: Colors.cyanAccent),
+                SalomonBottomBarItem(title:Text(Word.CLOCK), icon: Icon(Icons.alarm), selectedColor: Colors.cyanAccent),
+                SalomonBottomBarItem(title:Text(Word.ALARM), icon: Icon(Icons.add_alarm), selectedColor: Colors.cyanAccent),
                 SalomonBottomBarItem(title:Text(Word.RECORD), icon: Icon(Icons.bar_chart), selectedColor: Colors.cyanAccent),
                 SalomonBottomBarItem(title:Text(Word.INFO), icon: Icon(Icons.account_circle_outlined), selectedColor: Colors.cyanAccent),
               ],
