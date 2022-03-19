@@ -3,22 +3,14 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
 import 'package:wakeup/utils/strings.dart';
-import 'package:wakeup/ui/screen_main.dart';
-
-import 'package:kakao_flutter_sdk/all.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../controller/controller_login.dart';
-
-final LoginController controller = Get.put(LoginController());
-var _context;
 
 class ScreenLogin extends StatelessWidget {
   const ScreenLogin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _context = context;
     return GetBuilder<LoginController>(
         init: LoginController(),
         builder: (controller) {
@@ -33,117 +25,115 @@ class ScreenLogin extends StatelessWidget {
                 alignment: Alignment(0 , -1),
                 child: Image(image: AssetImage(Word.PATH_IMAGE2)),  // 배경 이미지 경로
               ),
-              LoginButton( btnType: Buttons.GitHub, margin: 190, onPressed: (){} ),
-              LoginButton( btnType: Buttons.Apple, margin: 140, onPressed: (){} ),
-              LoginButton( btnType: Buttons.Facebook, margin: 90,  onPressed: (){} ),
-              LoginButton( btnType: Buttons.Google, margin: 40,  onPressed: (){} ),
+
+              Align(
+                alignment: Alignment(0 , 1),
+                child: MaterialButton(
+                  onPressed: () { controller.loginGoogle(); },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 10 * 6,
+                    height: 40,
+                    margin: EdgeInsets.only(bottom: 200),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 15,
+                              spreadRadius: 5
+                          )
+                        ]
+                    ),
+                    child: SignInButton(
+                       Buttons.Google,
+                       onPressed: (){ controller.loginGoogle(); },
+                    )
+                  ),
+                ),
+              ),
+
+              //////////// Login Button  ////////
+              Align(
+                alignment: Alignment(0 , 1),
+                child: MaterialButton(
+                  onPressed: () { controller.loginGoogle(); },
+                  child: Container(
+                      width: MediaQuery.of(context).size.width / 10 * 6,
+                      height: 40,
+                      margin: EdgeInsets.only(bottom: 150),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                blurRadius: 15,
+                                spreadRadius: 5
+                            )
+                          ]
+                      ),
+                      child: SignInButton(
+                        Buttons.FacebookNew,
+                        onPressed: (){ controller.loginFacebook(); },
+                      )
+                  ),
+                ),
+              ),
+
+              Align(
+                alignment: Alignment(0 , 1),
+                child: MaterialButton(
+                  onPressed: () { controller.loginGoogle(); },
+                  child: Container(
+                      width: MediaQuery.of(context).size.width / 10 * 6,
+                      height: 40,
+                      margin: EdgeInsets.only(bottom: 100),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                blurRadius: 15,
+                                spreadRadius: 5
+                            )
+                          ]
+                      ),
+                      child: SignInButton(
+                        Buttons.GitHub,
+                        onPressed: (){ controller.loginGithub(context); },
+                      )
+                  ),
+                ),
+              ),
+
+              Align(
+                alignment: Alignment(0 , 1),
+                  child: Container(
+                     width: MediaQuery.of(context).size.width / 10 * 6,
+                     height: 40,
+                     margin: EdgeInsets.only(bottom: 50),
+                     decoration: BoxDecoration(
+                         color: Colors.white,
+                         borderRadius: BorderRadius.circular(15),
+                         boxShadow: [
+                           BoxShadow(
+                               color: Colors.black.withOpacity(0.3),
+                               blurRadius: 15,
+                               spreadRadius: 5
+                           )
+                         ]
+                     ),
+                     child: SignInButton(
+                       Buttons.Reddit,
+                       onPressed: (){ controller.loginKakao(); },
+                     )
+                  ),
+                )
             ],
           );
         }
     );
   }
-}
-
-class LoginButton extends StatelessWidget {
-  LoginButton({Key? key,
-    required this.btnType,
-    required this.onPressed,
-    required this.margin,
-  }) : super(key: key);
-
-  final Buttons btnType;
-  final VoidCallback onPressed;
-  final double margin;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment(0 , 1),
-      child: MaterialButton(
-        onPressed: () async {
-          controller.loginGoogle();
-        },
-        child: Container(
-          width: MediaQuery.of(_context).size.width / 10 * 6,
-          height: 40,
-          margin: EdgeInsets.only(bottom: margin),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 15,
-                    spreadRadius: 5
-                )
-              ]
-          ),
-          child: Align(
-            alignment: Alignment(0 , 0),
-            child: SignInButton(
-              btnType,
-              onPressed: (){
-                controller.loginGoogle();
-              },
-            )
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<String> signInWithKakao() async {
-    KakaoContext.clientId = 'aa2066b021be69a35115d04dfbffb4bb';
-    return await AuthCodeClient.instance.request();
-  }
-
-
-  _issueAccessToken(String authCode) async {
-    try {
-      // const keyHash = 'hmNYgOU/ytmn0MQoIJehlSPa7qg=';
-      var token = await AuthApi.instance.issueAccessToken(authCode);
-      var val = DefaultTokenManager().setToken(token);
-      var aaa = _getUser();
-      print(aaa);
-      Get.off(() => ScreenMain());
-    } catch (e) {
-      print('error on issuing access token: $e');
-    }
-  }
-
-  _loginWithKakao() async {
-    try {
-      var code = await AuthCodeClient.instance.request();
-      await _issueAccessToken(code);
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  _loginWithTalk() async {
-    try {
-      var code = await AuthCodeClient.instance.requestWithTalk();
-      await _issueAccessToken(code);
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<bool> _getUser() async {
-    try {
-      var user = await UserApi.instance.me();
-      print(user.toString());
-      return true;
-    } on KakaoAuthException catch (e) {
-      print(e);
-      return false;
-    } catch (e) {
-      print(e);
-      return true;
-    }
-  }
-}
-
-void _setLoggingIn(bool loggin, String errMsg) {
-  Fluttertoast.showToast(msg: '눌러졌음');
 }

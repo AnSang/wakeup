@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wakeup/models/login_info.dart';
@@ -16,12 +17,6 @@ class LoginController extends GetxController {
 
   late LoginInfo info;
 
-  @override
-  void onInit() async {
-    // isKakaoInstalled = await isKakaoTalkInstalled();
-    super.onInit();
-  }
-
   void setScreen(int index) {
     showScreenIndex = index.obs;
     update();
@@ -33,6 +28,39 @@ class LoginController extends GetxController {
         Fluttertoast.showToast(msg: 'Google Login Fail');
       } else {
         Fluttertoast.showToast(msg: 'Google Login Success');
+        Get.off(() => ScreenMain());
+      }
+    });
+  }
+
+  void loginFacebook() {
+    auth.signInWithFacebook().then((value) {
+      if (value == null) {
+        Fluttertoast.showToast(msg: 'FaceBook Login Fail');
+      } else {
+        Fluttertoast.showToast(msg: 'FaceBook Login Success');
+        Get.off(() => ScreenMain());
+      }
+    });
+  }
+
+  void loginGithub(BuildContext context) {
+    auth.signInWithGitHub(context).then((value) {
+      if (value == null) {
+        Fluttertoast.showToast(msg: 'Github Login Fail');
+      } else {
+        Fluttertoast.showToast(msg: 'Github Login Success');
+        Get.off(() => ScreenMain());
+      }
+    });
+  }
+
+  void loginKakao() {
+    auth.signInWithKaKao().then((value) {
+      if (value == null) {
+        Fluttertoast.showToast(msg: 'KaKao Login Fail');
+      } else {
+        Fluttertoast.showToast(msg: 'KaKao Login Success');
         Get.off(() => ScreenMain());
       }
     });
