@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:wakeup/models/login_info.dart';
 
 import '../ui/screen_main.dart';
-import '../utils/firebaseauth.dart';
+import '../utils/firebase_auth.dart';
 
 class LoginController extends GetxController {
   static const key = 'LoginInfo';
@@ -14,8 +13,6 @@ class LoginController extends GetxController {
   var isKakaoInstalled = false;
 
   FirebaseAuthentication auth = FirebaseAuthentication();
-
-  late LoginInfo info;
 
   void setScreen(int index) {
     showScreenIndex = index.obs;
