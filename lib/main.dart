@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakeup/ui/screen_login.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:wakeup/ui/screen_main.dart';
 
 import 'controller/controller_screen.dart';
 
@@ -37,7 +37,26 @@ class ScreenManage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'WakeUp Alarm',
       color: Colors.black,
-      home: const ScreenLogin(),
+      home: const Authentication(),
     );
   }
+}
+
+class Authentication extends StatelessWidget {
+  const Authentication({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return ScreenLogin();
+        } else {
+          return ScreenMain();
+        }
+      }
+    );
+  }
+
 }
