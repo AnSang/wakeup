@@ -1,9 +1,12 @@
 import 'package:d_button/d_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../controller/controller_info.dart';
+import '../main.dart';
+import '../utils/firebase_database.dart';
 import '../utils/strings.dart';
 
 class ScreenInfo extends StatelessWidget {
@@ -76,9 +79,52 @@ class ScreenInfo extends StatelessWidget {
                         SizedBox( height: 20 ),
                         InfoMenuButton(buttonName: '소리 크기'),
                         SizedBox( height: 20 ),
-                        InfoMenuButton(buttonName: '알람 소리'),
+                        DButtonShadow(
+                            height: 60,
+                            width: MediaQuery.of(context).size.width,
+                            mainColor: Colors.black,
+                            shadowColor: Colors.grey,
+                            splashColor: Colors.grey,
+                            radius: 15,
+                            onClick: () async {
+                              FirebaseDataBase database = FirebaseDataBase();
+                              // database.addAlarm();
+                              database.getAlarmList();
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                SizedBox(width: 15),
+                                Text( '알람 소리', style: TextStyle(fontSize: 16, color: Colors.white ) ),
+                                Expanded(child: SizedBox()),
+                                Icon(Icons.chevron_right, color: Colors.white),
+                                SizedBox(width: 15)
+                              ],
+                            )
+                        ),
                         SizedBox( height: 20 ),
-                        InfoMenuButton(buttonName: '로그아웃'),
+                        DButtonShadow(
+                            height: 60,
+                            width: MediaQuery.of(context).size.width,
+                            mainColor: Colors.black,
+                            shadowColor: Colors.grey,
+                            splashColor: Colors.grey,
+                            radius: 15,
+                            onClick: () {
+                              FirebaseAuth.instance.signOut();
+                              Get.off(Authentication());
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                SizedBox(width: 15),
+                                Text( '로그아웃', style: TextStyle(fontSize: 16, color: Colors.white ) ),
+                                Expanded(child: SizedBox()),
+                                Icon(Icons.chevron_right, color: Colors.white),
+                                SizedBox(width: 15)
+                              ],
+                            )
+                        )
                       ],
                     ),
                   )

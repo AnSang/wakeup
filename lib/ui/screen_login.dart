@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
+import 'package:wakeup/ui/screen_main.dart';
 import 'package:wakeup/utils/strings.dart';
 
 import '../controller/controller_login.dart';
@@ -127,7 +130,10 @@ class ScreenLogin extends StatelessWidget {
                      ),
                      child: SignInButton(
                        Buttons.Reddit,
-                       onPressed: (){ controller.loginKakao(); },
+                       onPressed: (){
+                         Get.off(() => ScreenMain(), transition: Transition.native);
+                         // controller.loginKakao();
+                         },
                      )
                   ),
                 )

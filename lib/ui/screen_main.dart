@@ -4,8 +4,6 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:wakeup/controller/controller_main.dart';
 import 'package:wakeup/utils/strings.dart';
 
-final MainController controller = Get.put(MainController());
-
 class ScreenMain extends StatelessWidget {
   const ScreenMain({Key? key}) : super(key: key);
 
