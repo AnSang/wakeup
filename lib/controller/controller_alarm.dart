@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wakeup/controller/controller_main.dart';
@@ -13,22 +12,19 @@ class AlarmController extends GetxController {
 
   FirebaseDataBase dataBase = Get.find<MainController>().dataBase;
 
-  late TimeOfDay timeOfDay;
-  var alarmList;
-  var daySelect = List.filled(7, false);
-  var isAlarmCreate = false;
-  var isAlarmModify = -1;
-  var alarmTimeString = '';
-  var alarmTime = DateTime.now();
-
-  late User? loginInfo;
+  TimeOfDay timeOfDay = TimeOfDay(hour: 12, minute: 00);
+  List<AlarmInfo> alarmList = [];
+  List<bool> daySelect = List.filled(7, false);
+  int isAlarmModify = -1;
+  String alarmTimeString = '';
+  DateTime alarmTime = DateTime.now();
+  bool isAlarmCreate = false;
+  bool isShowProgress = false;
 
   @override
   void onInit() {
-    loginInfo = FirebaseAuth.instance.currentUser;
     timeOfDay = TimeOfDay(hour: 12, minute: 00);
     alarmList = dataBase.alarmList;
-    // alarmList = setAlarmList();
     daySelect = List.filled(7, false);
     super.onInit();
   }
@@ -54,100 +50,107 @@ class AlarmController extends GetxController {
     update();
   }
 
-/////////////// init /////////////////////
+  /// 알람시간 초기화
   void initTimeOfDay() {
     timeOfDay = TimeOfDay(hour: 12, minute: 00);
     update();
   }
 
+  /// 요일 선택하는것 초기화
   void initDaySelect() {
     daySelect.fillRange(0, daySelect.length, false);
     update();
   }
-////////////// add /////////////////////
-  void addAlarm() {
-    alarmList.add(AlarmInfo(index: alarmList.length, time: alarmTimeString, day: daySelect.toList(), isRun: true));
-    pref.setString(key, jsonEncode(alarmList));
+
+  /// Alarm 추가
+  void addAlarm() async {
+    setShowProgress(true);
+    await dataBase.addAlarm(AlarmInfo(index: alarmList.length, time: alarmTimeString, day: daySelect.toList(), isRun: true));
+    await dataBase.getAlarmList();
+    setShowProgress(false);
     update();
   }
-////////////// delete /////////////////////
-  void delAlarm(int index) {
-    alarmList.removeAt(index);
-    for (int i = 0; i < alarmList.length; i++) {  // 인덱스 재정렬
-      alarmList[i].index = i;
-    }
 
-    pref.setString(key, jsonEncode(alarmList));
+  /// Alarm 삭제
+  void delAlarm(int index) async {
+    setShowProgress(true);
+    await dataBase.deleteAlarm(index);
+    await dataBase.getAlarmList();
+    await dataBase.sortIndexAlarm();
+    await dataBase.getAlarmList();
+    setShowProgress(false);
     update();
   }
-////////////// Get /////////////////////
-  String getDays(int index) {
-    String day = '';
-    for (int i = 0; i < alarmList[index].day.length; i++) {
-      if (alarmList[index].day[i]) {
-        if (i == 0) day += '일 ';
-        else if (i == 1) day += '월 ';
-        else if (i == 2) day += '화 ';
-        else if (i == 3) day += '수 ';
-        else if (i == 4) day += '목 ';
-        else if (i == 5) day += '금 ';
-        else if (i == 6) day += '토 ';
-      }
-    }
-    return day;
-  }
 
-////////////// Set /////////////////////
+  /// 알람추가 UI 띄울지 말지 설정
   void setIsCreate(bool bool) {
     isAlarmCreate = bool;
     update();
   }
 
-  void setBool(int index) {
+  /// Switch로 On Off 설정
+  void setBool(int index) async {
     alarmList[index].isRun = !alarmList[index].isRun;
-    pref.setString(key, jsonEncode(alarmList));
+    await dataBase.updateAlarm(alarmList[index]);
     update();
   }
 
+  /// TimeOfDay 설정
   void setTimeOfDay(TimeOfDay time) {
     timeOfDay = time;
     update();
   }
 
+  /// 요일선택 설정
   void setDaySelectItem(int index, int day) {
     alarmList[index].day[day] = !alarmList[index].day[day];
     update();
   }
 
+  /// 요일 선택 설정
   void setDaySelect(int index) {
     daySelect[index] = !daySelect[index];
     update();
   }
 
-  List<AlarmInfo> setAlarmList() {
-    String? list = pref.getString(key);
-    if (list == null) {
-      return [];
-    } else {
-      List<AlarmInfo> list_ = [];
-      List copy = jsonDecode(list);
-      for (Map<String, Object?> row in copy) {
-        list_.add(AlarmInfo.fromJson(row));
+  /// 요일 선택한게 있는지 체크
+  bool checkDaySelect() {
+    for (bool row in daySelect) {
+      if (row) {
+        return true;
       }
-      return list_;
     }
+    return false;
   }
 
-  /*void setInstance() {
-    alarmList.clear();
-    alarmList.add(AlarmInfo(time: '14:42', day: List.filled(7, false), isRun: false));
-    alarmList.add(AlarmInfo(time: '06:11', day: List.filled(7, true), isRun: true));
-    alarmList.add(AlarmInfo(time: '09:42', day: List.filled(7, false), isRun: false));
-    alarmList.add(AlarmInfo(time: '14:42', day: List.filled(7, false), isRun: false));
-    alarmList.add(AlarmInfo(time: '14:42', day: List.filled(7, true), isRun: false));
-    alarmList.add(AlarmInfo(time: '06:11', day: List.filled(7, false), isRun: true));
-    alarmList.add(AlarmInfo(time: '09:42', day: List.filled(7, false), isRun: false));
-    alarmList.add(AlarmInfo(time: '14:42', day: List.filled(7, false), isRun: false));
+  /// progress Indicator ON & OFF
+  void setShowProgress(bool show) {
+    isShowProgress = show;
     update();
-  }*/
+  }
+
+  /// 선택한 요일 String으로 반환
+  String getDays(int index) {
+    String day = '';
+    for (int i = 0; i < alarmList[index].day.length; i++) {
+      if (alarmList[index].day[i]) {
+        if (i == 0) {
+          day += '일 ';
+        } else if (i == 1) {
+          day += '월 ';
+        } else if (i == 2) {
+          day += '화 ';
+        } else if (i == 3) {
+          day += '수 ';
+        } else if (i == 4) {
+          day += '목 ';
+        } else if (i == 5) {
+          day += '금 ';
+        } else if (i == 6) {
+          day += '토 ';
+        }
+      }
+    }
+    return day;
+  }
 }

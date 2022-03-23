@@ -86,11 +86,7 @@ class ScreenInfo extends StatelessWidget {
                             shadowColor: Colors.grey,
                             splashColor: Colors.grey,
                             radius: 15,
-                            onClick: () async {
-                              FirebaseDataBase database = FirebaseDataBase();
-                              // database.addAlarm();
-                              database.getAlarmList();
-                            },
+                            onClick: () { },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
