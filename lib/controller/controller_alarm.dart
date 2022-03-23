@@ -1,25 +1,34 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wakeup/controller/controller_main.dart';
 import 'dart:convert';
 import 'package:wakeup/models/alarm_info.dart';
 
 import '../main.dart';
+import '../utils/firebase_database.dart';
 
 class AlarmController extends GetxController {
   static const key = 'alarm';
 
+  FirebaseDataBase dataBase = Get.find<MainController>().dataBase;
+
   late TimeOfDay timeOfDay;
-  late List<AlarmInfo> alarmList;
+  var alarmList;
   var daySelect = List.filled(7, false);
   var isAlarmCreate = false;
   var isAlarmModify = -1;
   var alarmTimeString = '';
   var alarmTime = DateTime.now();
 
+  late User? loginInfo;
+
   @override
   void onInit() {
+    loginInfo = FirebaseAuth.instance.currentUser;
     timeOfDay = TimeOfDay(hour: 12, minute: 00);
-    alarmList = setAlarmList();
+    alarmList = dataBase.alarmList;
+    // alarmList = setAlarmList();
     daySelect = List.filled(7, false);
     super.onInit();
   }

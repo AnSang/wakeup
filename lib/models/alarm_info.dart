@@ -3,6 +3,7 @@ class AlarmInfo {
   String time;
   List<dynamic> day;
   bool isRun = false;
+  String? document;
 
   AlarmInfo({
     required this.index,
@@ -11,7 +12,7 @@ class AlarmInfo {
     required this.isRun
   });
 
-  AlarmInfo.fromJson(Map<String, dynamic> json)
+  AlarmInfo.fromJson(Map<String, Object?> json)
       : this(
         index: json['index']! as int,
         time: json['time']! as String,
@@ -19,7 +20,7 @@ class AlarmInfo {
         isRun: json['isRun']! as bool
   );
 
-  Map<String, dynamic> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'index' : index,
       'time' : time,
