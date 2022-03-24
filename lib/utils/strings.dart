@@ -12,4 +12,6 @@ class Word {
   static const String ALARM   = '알람';
   static const String RECORD  = '기록';
   static const String INFO    = '정보';
+
+  static const List<String> WEEKEND = ['월','화','수','목','금','토','일'];
 }

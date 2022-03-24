@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:wakeup/controller/controller_main.dart';
 import 'dart:convert';
 import 'package:wakeup/models/alarm_info.dart';
@@ -82,16 +83,27 @@ class AlarmController extends GetxController {
     update();
   }
 
-  /// 알람추가 UI 띄울지 말지 설정
-  void setIsCreate(bool bool) {
-    isAlarmCreate = bool;
+  /// TimePicker 선택 후 저장
+  void setTimePicker(TimeOfDay day) {
+    final now = DateTime.now();
+    final selectedDateTime = DateTime( now.year, now.month, now.day, day.hour, day.minute );
+    alarmTime = selectedDateTime;
+    alarmTimeString = DateFormat('HH:mm').format(selectedDateTime);
     update();
   }
 
   /// Switch로 On Off 설정
   void setBool(int index) async {
+    setShowProgress(true);
     alarmList[index].isRun = !alarmList[index].isRun;
     await dataBase.updateAlarm(alarmList[index]);
+    setShowProgress(false);
+    update();
+  }
+
+  /// 알람추가 UI 띄울지 말지 설정
+  void setIsCreate(bool bool) {
+    isAlarmCreate = bool;
     update();
   }
 
