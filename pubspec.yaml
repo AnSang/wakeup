@@ -47,6 +47,7 @@ dependencies:
   day_night_time_picker: ^1.0.5         # Time Picker
   flutter_slidable: ^1.2.0              # Slidable
   flutter_local_notifications: ^9.4.0   # notifications
+  flutter_spinkit: ^5.1.0               # progress_indicator
   time_chart: ^0.3.2
   dotted_border: ^2.0.0+2
 

@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -238,14 +239,10 @@ class ScreenAlarm2 extends StatelessWidget {
               ),
 
               if (controller.isShowProgress)
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: CircularProgressIndicator(
-                    color: Colors.purpleAccent,
-                    strokeWidth: 8,
-                  ),
-                )
+                  SpinKitFadingCircle(
+                    color: Colors.white,
+                    size: 80,
+                  )
             ],
           );
       }
