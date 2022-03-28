@@ -1,3 +1,4 @@
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:wakeup/ui/screen_clock.dart';
 import 'package:wakeup/ui/screen_info.dart';
