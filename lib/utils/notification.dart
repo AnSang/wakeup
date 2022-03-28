@@ -1,66 +1,100 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
+import 'package:wakeup/utils/strings.dart';
+import '../models/alarm_info.dart';
 
-class NotificationPlugin {
-  BuildContext context;
-  var flutterLocalNotificationsPlugin;
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
-  NotificationPlugin({required this.context});
+class AlarmNotification {
+  final plugin = FlutterLocalNotificationsPlugin();
 
-  void initNotification() {
-    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettingsIOS = IOSInitializationSettings();
-
-    var initializationSettings = InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: onSelectNotification);
+  /// init Notification
+  void initNotiSetting() async {
+    final initSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    final initSettingsIOS = IOSInitializationSettings(
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
+    );
+    final initSettings = InitializationSettings(
+      android: initSettingsAndroid,
+      iOS: initSettingsIOS,
+    );
+    await plugin.initialize( initSettings );
   }
 
-  Future<void> onSelectNotification(String payload) async {
-    debugPrint(payload);
-    showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text('Notification Payload'),
-          content: Text('Payload: $payload'),
-        ));
-  }
+  /// Set Notification
+  Future dailyAtTimeNotification(AlarmInfo alarm) async {
+    int hour = int.parse(alarm.time.split(':')[0]);
+    int min  = int.parse(alarm.time.split(':')[1]);
 
-  Future<void> dailyAtTimeNotification() async {
-    var time = Time(09, 32, 30);
+    String notiDesc = '$hour시 $min분';
+    String notiID = alarm.index.toString();
+
+    final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    if (Platform.isIOS) {
+      final bool? result = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+
+      if (result != null && result) {
+        await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+            ?.deleteNotificationChannelGroup(notiID);
+      }
+    }
+
     var android = AndroidNotificationDetails(
-        '알람앱 ID', '알람앱 NAME', channelDescription: '알람앱 description',
-        importance: Importance.max, priority: Priority.high);
-
+        notiID,
+        Word.ALARM,
+        channelDescription: notiDesc,
+        importance: Importance.max,
+        playSound: true,
+        priority: Priority.max
+    );
     var ios = IOSNotificationDetails();
     var detail = NotificationDetails(android: android, iOS: ios);
 
-    await flutterLocalNotificationsPlugin.showDailyAtTime(
-      0,
-      '${time.hour}시 ${time.minute}분',
-      '하단 표시글',
-      time,
-      detail,
-      payload: 'Hello Flutter',
-    );
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        alarm.index,
+        Word.ALARM,
+        notiDesc,
+        _setNotiTime(alarm.time),
+        detail,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime);
+
+    // await flutterLocalNotificationsPlugin.periodicallyShow(  반복 알람
   }
 
-  Future<void> repeatNotification() async {
-    var android = AndroidNotificationDetails(
-        'your channel id', 'your channel name', channelDescription: 'your channel description',
-        importance: Importance.max, priority: Priority.high);
+  ///알람 삭제하기
+  Future deleteAlarm(int alarmId) async {
+    await plugin.cancel(alarmId);
+  }
 
-    var ios = IOSNotificationDetails();
-    var detail = NotificationDetails(android: android, iOS: ios);
+  /// 시간지정하기
+  tz.TZDateTime _setNotiTime(String time) {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
 
-    await flutterLocalNotificationsPlugin.periodicallyShow(
-      0,
-      '반복 Notification',
-      '반복 Notification 내용',
-      RepeatInterval.everyMinute,
-      detail,
-      payload: 'Hello Flutter',
-    );
+    final now = tz.TZDateTime.now(tz.local);
+    final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, now.minute, now.second + 10);
+    // final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, int.parse(time.split(':')[0]), int.parse(time.split(':')[1]));
+
+    if (now.isBefore(alarm)) {
+      return alarm;
+    } else {
+      return alarm.add(Duration(days: 1));
+    }
   }
 }

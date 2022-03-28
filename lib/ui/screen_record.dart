@@ -55,8 +55,8 @@ class ScreenRecord extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
+              GetBuilder<RecordController>(
+                  builder: (controller) {
                     return TimeChart(
                       data: controller.showItems,
                       chartType: ChartType.time,
