@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:wakeup/controller/controller_main.dart';
 import 'dart:convert';
 import 'package:wakeup/models/alarm_info.dart';
+import 'package:wakeup/utils/notification.dart';
 
 import '../main.dart';
 import '../utils/firebase_database.dart';
@@ -12,6 +13,7 @@ class AlarmController extends GetxController {
   static const key = 'alarm';
 
   FirebaseDataBase dataBase = Get.find<MainController>().dataBase;
+  AlarmNotification noti = Get.find<MainController>().noti;
 
   TimeOfDay timeOfDay = TimeOfDay(hour: 12, minute: 00);
   List<AlarmInfo> alarmList = [];
@@ -66,7 +68,9 @@ class AlarmController extends GetxController {
   /// Alarm 추가
   void addAlarm() async {
     setShowProgress(true);
-    await dataBase.addAlarm(AlarmInfo(index: alarmList.length, time: alarmTimeString, day: daySelect.toList(), isRun: true));
+    AlarmInfo alarm = AlarmInfo(index: alarmList.length, time: alarmTimeString, day: daySelect.toList(), isRun: true);
+    await dataBase.addAlarm(alarm);
+    await noti.dailyAtTimeNotification(alarm);
     await dataBase.getAlarmList();
     setShowProgress(false);
     update();
@@ -76,6 +80,7 @@ class AlarmController extends GetxController {
   void delAlarm(int index) async {
     setShowProgress(true);
     await dataBase.deleteAlarm(index);
+    await noti.deleteAlarm(index);
     await dataBase.getAlarmList();
     await dataBase.sortIndexAlarm();
     await dataBase.getAlarmList();
@@ -95,8 +100,13 @@ class AlarmController extends GetxController {
   /// Switch로 On Off 설정
   void setBool(int index) async {
     setShowProgress(true);
-    alarmList[index].isRun = !alarmList[index].isRun;
+    final check = alarmList[index].isRun = !alarmList[index].isRun;
     await dataBase.updateAlarm(alarmList[index]);
+    if (check) {  // 알람이 활성화된 경우
+      noti.dailyAtTimeNotification(dataBase.alarmList[index]);
+    } else {
+      noti.deleteAlarm(index);
+    }
     setShowProgress(false);
     update();
   }

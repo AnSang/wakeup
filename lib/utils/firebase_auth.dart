@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:github_sign_in/github_sign_in.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:kakao_flutter_sdk/all.dart' as kakao;
 
 class FirebaseAuthentication {
   // The entrypoint of the firebase auth SDK
@@ -104,7 +103,7 @@ class FirebaseAuthentication {
   }
 
 
-  //////// KaKao /////////////
+  /*//////// KaKao /////////////
   Future<String?> signInWithKaKao() async {
     final installed = await kakao.isKakaoTalkInstalled().then((value1) async { // Kakao 설치 여부 확인
       try {
@@ -136,5 +135,5 @@ class FirebaseAuthentication {
       print(e);
       return true;
     }
-  }
+  }*/
 }

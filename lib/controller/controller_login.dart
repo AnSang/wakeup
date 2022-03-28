@@ -52,7 +52,7 @@ class LoginController extends GetxController {
     });
   }
 
-  void loginKakao() {
+  /*void loginKakao() {
     auth.signInWithKaKao().then((value) {
       if (value == null) {
         Fluttertoast.showToast(msg: 'KaKao Login Fail');
@@ -61,5 +61,5 @@ class LoginController extends GetxController {
         Get.off(() => ScreenMain());
       }
     });
-  }
+  }*/
 }
