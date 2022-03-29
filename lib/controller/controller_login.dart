@@ -10,7 +10,6 @@ class LoginController extends GetxController {
 
   var autoLogin = false.obs;
   var showScreenIndex = 0.obs;
-  var isKakaoInstalled = false;
 
   FirebaseAuthentication auth = FirebaseAuthentication();
 

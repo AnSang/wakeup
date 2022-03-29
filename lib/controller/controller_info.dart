@@ -9,11 +9,6 @@ class InfoController extends GetxController {
   var userName = '안상은';
   var recordCount = '22';
 
-  @override
-  void onInit() async {
-    super.onInit();
-  }
-
   /// isShowPopupWindow 반전   on/off
   void setPopupOff() {
     isShow = CrossFadeState.showFirst;

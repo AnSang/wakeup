@@ -30,7 +30,7 @@ class ScreenClock extends StatelessWidget {
 
                 SizedBox( height: 40 ),
 
-                Container(
+                SizedBox(
                   width: 300,
                   height: 300,
                   child: Transform.rotate(

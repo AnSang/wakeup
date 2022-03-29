@@ -48,7 +48,6 @@ dependencies:
   flutter_slidable: ^1.2.0              # Slidable
   flutter_local_notifications: ^9.4.0   # notifications
   flutter_spinkit: ^5.1.0               # progress_indicator
-  flutter_ringtone_player: ^3.1.1
   time_chart: ^0.3.2
   dotted_border: ^2.0.0+2
 
@@ -58,7 +57,7 @@ dependencies:
   firebase_auth: ^3.3.7
 
   # Login
-  google_sign_in: ^4.5.9
+  google_sign_in: ^5.2.4
   flutter_facebook_auth: ^4.1.2
   github_sign_in: ^0.0.4
 

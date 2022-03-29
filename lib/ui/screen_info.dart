@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 
 import '../controller/controller_info.dart';
 import '../main.dart';
-import '../utils/firebase_database.dart';
 import '../utils/strings.dart';
 
 class ScreenInfo extends StatelessWidget {
