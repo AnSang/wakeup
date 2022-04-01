@@ -3,14 +3,17 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:wakeup/models/alarm_record.dart';
 
+import '../utils/firebase_database.dart';
+import 'controller_main.dart';
+
 class RecordController extends GetxController {
   var showDate = DateTime.now();  // 보여줄 날짜 (년,월)
   var showItems;
-  List<AlarmRecord> items = [];
+
+  FirebaseDataBase dataBase = Get.find<MainController>().dataBase;
 
   @override
   void onInit() async {
-    items = instance();
     showItems = getMonthItem();
     super.onInit();
   }
@@ -35,30 +38,14 @@ class RecordController extends GetxController {
 
   List<DateTimeRange> getMonthItem() {
     List<DateTimeRange> list = [];
-    for (AlarmRecord row in items) {
-      String rowMonth = getMonth(row.start);
-      String nowMonth = getMonth(showDate);
-      if (rowMonth.contains(nowMonth)) {
-        list.add(DateTimeRange(start: row.start, end: row.end));
-      }
+    for (AlarmRecord row in dataBase.recordList) {
+
     }
 
     list.sort((a, b){
       return b.start.compareTo(a.start);
     });
 
-    return list;
-  }
-
-  List<AlarmRecord> instance() {
-    List<AlarmRecord> list = [];
-    list.add(AlarmRecord(start: DateTime(2022, 3, 12, 6, 0), end: DateTime(2022, 3, 12, 14, 22), count: 2));
-    list.add(AlarmRecord(start: DateTime(2022, 3, 13, 4, 53), end: DateTime(2022, 3, 13, 11, 53), count: 1));
-    list.add(AlarmRecord(start: DateTime(2022, 3, 14, 11, 43),end: DateTime(2022, 3, 14, 15, 42), count: 1));
-
-    list.add(AlarmRecord(start: DateTime(2022, 4, 5, 13, 0), end: DateTime(2022, 4, 6, 1, 22), count: 2));
-    list.add(AlarmRecord(start: DateTime(2022, 4, 13, 4, 53), end: DateTime(2022, 4, 13, 11, 22), count: 1));
-    list.add(AlarmRecord(start: DateTime(2022, 4, 25, 21, 43),end: DateTime(2022, 4, 26, 5, 42), count: 1));
     return list;
   }
 }
