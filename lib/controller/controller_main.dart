@@ -17,7 +17,6 @@ class MainController extends GetxController {
 
   var showScreenIndex = 0;            // Screen List, Menu List   Index
 
-
   @override
   void onInit() async {
     noti.initNotiSetting();
@@ -29,6 +28,10 @@ class MainController extends GetxController {
         }
       }
     });
+    dataBase.getRecordList(); // 기록 data 가져오기
+    dataBase.getInfo();       // UserInfoLocal
+    dataBase.downloadFile();
+    update();
     super.onInit();
   }
 
