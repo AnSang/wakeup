@@ -23,7 +23,12 @@ class ScreenLogin extends StatelessWidget {
               ),
               Align(  // 배경 이미지 설정
                 alignment: Alignment(0 , -1),
-                child: Image(image: AssetImage(Word.PATH_IMAGE2)),  // 배경 이미지 경로
+                child: Column(
+                    children: [
+                      SizedBox( height: 80 ),
+                      Image(image: AssetImage(Word.PATH_IMAGE2)),  // 배경 이미지 경로
+                    ]
+                  )
               ),
 
               Align(
