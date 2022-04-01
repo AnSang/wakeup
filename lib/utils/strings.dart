@@ -13,5 +13,7 @@ class Word {
   static const String RECORD  = '기록';
   static const String INFO    = '정보';
 
-  static const List<String> WEEKEND = ['월','화','수','목','금','토','일'];
+  static const String INIT_NAME  = '홍길동';
+
+  static const List<String> WEEKEND = ['일','월','화','수','목','금','토'];
 }
