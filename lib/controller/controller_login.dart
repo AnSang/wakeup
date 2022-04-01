@@ -8,13 +8,13 @@ import '../utils/firebase_auth.dart';
 class LoginController extends GetxController {
   static const key = 'LoginInfo';
 
-  var autoLogin = false.obs;
-  var showScreenIndex = 0.obs;
+  var autoLogin = false;
+  var showScreenIndex = 0;
 
   FirebaseAuthentication auth = FirebaseAuthentication();
 
   void setScreen(int index) {
-    showScreenIndex = index.obs;
+    showScreenIndex = index;
     update();
   }
 
