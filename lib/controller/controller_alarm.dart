@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:wakeup/controller/controller_main.dart';
-import 'dart:convert';
 import 'package:wakeup/models/alarm_info.dart';
 import 'package:wakeup/utils/notification.dart';
 
-import '../main.dart';
 import '../utils/firebase_database.dart';
 
 class AlarmController extends GetxController {
@@ -43,7 +41,6 @@ class AlarmController extends GetxController {
   void mSave(int index) { // 알람 수정화면 > 등록
     String time = timeOfDay.toString().substring(10,15);
     alarmList[index] = (AlarmInfo(index: index, time: time, day: daySelect.toList(), isRun: true));
-    pref.setString(key, jsonEncode(alarmList));
 
     // init
     isAlarmCreate = false;
@@ -156,9 +153,7 @@ class AlarmController extends GetxController {
     String day = '';
     for (int i = 0; i < alarmList[index].day.length; i++) {
       if (alarmList[index].day[i]) {
-        if (i == 0) {
-          day += '일 ';
-        } else if (i == 1) {
+        if (i == 1) {
           day += '월 ';
         } else if (i == 2) {
           day += '화 ';
@@ -170,6 +165,8 @@ class AlarmController extends GetxController {
           day += '금 ';
         } else if (i == 6) {
           day += '토 ';
+        } else if (i == 0) {
+          day += '일 ';
         }
       }
     }
