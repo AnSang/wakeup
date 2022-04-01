@@ -183,7 +183,7 @@ class ScreenAlarm extends StatelessWidget {
                                                 Icons.arrow_forward_ios),
                                           ),
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
                                               FloatingActionButton.extended(
                                                 onPressed: (){
@@ -194,7 +194,6 @@ class ScreenAlarm extends StatelessWidget {
                                                 icon: Icon(Icons.cancel_outlined),
                                                 label: Text('Cancel'),
                                               ),
-                                              SizedBox( width: 30),
                                               FloatingActionButton.extended(
                                                 onPressed: (){
                                                   if (controller.checkDaySelect()) {
