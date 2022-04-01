@@ -239,13 +239,7 @@ class ScreenAlarm extends StatelessWidget {
                     )
                   ]).toList(),
                 ),
-              ),
-
-              if (controller.isShowProgress)
-                  SpinKitFadingCircle(
-                    color: Colors.white,
-                    size: 80,
-                  )
+              )
             ],
           );
       }

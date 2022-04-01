@@ -16,6 +16,7 @@ class MainController extends GetxController {
   final AlarmNotification noti = AlarmNotification();
 
   var showScreenIndex = 0;            // Screen List, Menu List   Index
+  bool isShowProgress = false;
 
   @override
   void onInit() async {
@@ -37,6 +38,12 @@ class MainController extends GetxController {
 
   void setScreen(int index) {
     showScreenIndex = index;
+    update();
+  }
+
+  /// progress Indicator ON & OFF
+  void setShowProgress(bool show) {
+    isShowProgress = show;
     update();
   }
 }

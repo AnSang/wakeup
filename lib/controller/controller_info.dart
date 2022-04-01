@@ -62,12 +62,14 @@ class InfoController extends GetxController {
   }
 
   /// 프로필 사진 업로드
-  void upLoadPhoto(XFile file) {
-   dataBase.uploadFile(file).then((value) => update());
+  void upLoadPhoto(XFile file) async {
+   await dataBase.uploadFile(file);
+   update();
   }
 
   /// 프로필 사진 다운로드
-  void downloadPhoto() {
-    dataBase.downloadFile().then((value) => update());
+  void downloadPhoto() async {
+    dataBase.downloadFile();
+    update();
   }
 }

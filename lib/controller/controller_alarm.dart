@@ -20,7 +20,6 @@ class AlarmController extends GetxController {
   String alarmTimeString = '';
   DateTime alarmTime = DateTime.now();
   bool isAlarmCreate = false;
-  bool isShowProgress = false;
 
   @override
   void onInit() {
@@ -144,7 +143,7 @@ class AlarmController extends GetxController {
 
   /// progress Indicator ON & OFF
   void setShowProgress(bool show) {
-    isShowProgress = show;
+    Get.find<MainController>().setShowProgress(show);
     update();
   }
 

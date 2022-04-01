@@ -316,13 +316,13 @@ Future<void> onImageButtonPressed(BuildContext context, InfoController controlle
               title: const Text('사진을 업로드 하시겠습니까 ?'),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('CANCEL'),
+                  child: const Text('취소'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
-                    child: const Text('PICK'),
+                    child: const Text('확인'),
                     onPressed: () {
                       controller.upLoadPhoto(image);
                       Navigator.of(context).pop();
