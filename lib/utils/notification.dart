@@ -1,10 +1,11 @@
-import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wakeup/utils/strings.dart';
 import '../models/alarm_info.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+import 'firebase_database.dart';
 
 class AlarmNotification {
   final plugin = FlutterLocalNotificationsPlugin();
@@ -21,7 +22,7 @@ class AlarmNotification {
       android: initSettingsAndroid,
       iOS: initSettingsIOS,
     );
-    await plugin.initialize( initSettings );
+    await plugin.initialize( initSettings, onSelectNotification: onSelectNotification );
   }
 
   /// Set Notification
@@ -34,7 +35,7 @@ class AlarmNotification {
 
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-    if (Platform.isIOS) {
+    /*if (Platform.isIOS) {
       final bool? result = await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
           IOSFlutterLocalNotificationsPlugin>()
@@ -50,7 +51,7 @@ class AlarmNotification {
             AndroidFlutterLocalNotificationsPlugin>()
             ?.deleteNotificationChannelGroup(notiID);
       }
-    }
+    }*/
 
     var android = AndroidNotificationDetails(
         notiID,
@@ -76,9 +77,19 @@ class AlarmNotification {
     // await flutterLocalNotificationsPlugin.periodicallyShow(  반복 알람
   }
 
-  ///알람 삭제하기
+  /// 알람 삭제하기
   Future deleteAlarm(int alarmId) async {
     await plugin.cancel(alarmId);
+  }
+
+  /// notification 눌렀을때
+  Future onSelectNotification(String? payload) async {
+    DateTime now = DateTime.now();
+    String date = '${now.year}.${now.month}.${now.day}';
+    String time = '${now.hour}:${now.minute}';
+
+    final FirebaseDataBase dataBase = FirebaseDataBase();
+    dataBase.addRecord(date, time);
   }
 
   /// 시간지정하기
