@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wakeup/utils/strings.dart';
 
 import '../controller/controller_info.dart';
 import '../main.dart';
@@ -39,8 +40,9 @@ class ScreenInfo extends StatelessWidget {
                           onClick: () => { onImageButtonPressed(context, controller) },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(30),
-                            child: controller.dataBase.image,
-                          )),
+                            child: controller.dataBase.image ?? Image(image: AssetImage(Word.PATH_IMAGE3)),
+                          )
+                      ),
                       Align(
                           alignment: Alignment(0, 0),
                           child: Container(
@@ -253,7 +255,6 @@ class ScreenInfo extends StatelessWidget {
         keyboardType: TextInputType.name,
         decoration: InputDecoration(
           labelText: 'Hint',
-          helperText: 'sdfsdf',
           hintText: '닉네임을 입력하세요.',
           hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
           border: const OutlineInputBorder(

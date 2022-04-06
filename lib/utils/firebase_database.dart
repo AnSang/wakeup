@@ -16,7 +16,7 @@ class FirebaseDataBase {
   final User? userInfo = FirebaseAuth.instance.currentUser;
   Reference storageRef = FirebaseStorage.instance.ref();
 
-  Image image = Image(image: AssetImage(Word.PATH_IMAGE3));
+  Image? image;
   List<AlarmInfo> alarmList = [];
   List<AlarmRecord> recordList = [];
   UserInfoLocal userInfoLocal = UserInfoLocal(name: Word.INIT_NAME, volume: 0);

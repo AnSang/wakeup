@@ -69,7 +69,7 @@ class InfoController extends GetxController {
 
   /// 프로필 사진 다운로드
   void downloadPhoto() async {
-    dataBase.downloadFile();
+    await dataBase.downloadFile();
     update();
   }
 }
