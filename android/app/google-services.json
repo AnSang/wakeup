@@ -14,11 +14,48 @@
       },
       "oauth_client": [
         {
-          "client_id": "84482503674-p17akrrba1rs7ucsclkhe1v6pgtivmrs.apps.googleusercontent.com",
+          "client_id": "84482503674-355d1ngglqlmrboup02gs0raut0r2e9o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.wakeup",
-            "certificate_hash": "86635880e53fcad9a7d0c4282097a19523daeea8"
+            "certificate_hash": "4b93f9d371a310e28988ae9ac0db92e1f986db74"
+          }
+        },
+        {
+          "client_id": "84482503674-7gp718ij7ctjr8d4l78oao98q41idbt3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1U5zudqsAz8iSTt7t50mOKs4D42oWWPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84482503674-7gp718ij7ctjr8d4l78oao98q41idbt3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84482503674:android:bb3db24c93b2f2653a6a43",
+        "android_client_info": {
+          "package_name": "com.example.wakeuprecord"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84482503674-eibkjjgrspk8o8stq92ehu0vfudp1jv3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wakeuprecord",
+            "certificate_hash": "cc2f0296cc916dbbc6018d17e646a1a87c53c798"
           }
         },
         {
