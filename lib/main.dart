@@ -1,22 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakeup/ui/screen_login.dart';
 import 'package:wakeup/ui/screen_main.dart';
 
 import 'controller/controller_screen.dart';
 
 final ScreenController controller = Get.put(ScreenController());
-late SharedPreferences pref;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  pref = await SharedPreferences.getInstance();
-  _initNotiSetting();
   await Firebase.initializeApp(
       // options: const FirebaseOptions(
       //     apiKey: 'AIzaSyC1U5zudqsAz8iSTt7t50mOKs4D42oWWPw',
@@ -61,21 +56,4 @@ class Authentication extends StatelessWidget {
       }
     );
   }
-}
-
-void _initNotiSetting() async {
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final initSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-  final initSettingsIOS = IOSInitializationSettings(
-    requestSoundPermission: true,
-    requestBadgePermission: true,
-    requestAlertPermission: true,
-  );
-  final initSettings = InitializationSettings(
-    android: initSettingsAndroid,
-    iOS: initSettingsIOS,
-  );
-  await flutterLocalNotificationsPlugin.initialize(
-    initSettings,
-  );
 }

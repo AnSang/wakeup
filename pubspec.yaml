@@ -36,22 +36,24 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   #Util
-  get: ^4.6.1                           #
-  dio: ^4.0.6                           #
-  intl: ^0.17.0                         #
-  cross_file: ^0.3.2                    #
-  fluttertoast: ^8.0.8                  #
-  flutter_signin_button: ^2.0.0         #
-  salomon_bottom_bar: ^3.3.0            #
-  d_button: ^0.0.10                     #
-  weekday_selector: ^1.1.0              #
-  day_night_time_picker: ^1.0.5         #
-  flutter_slidable: ^1.2.0              #
-  flutter_local_notifications: ^9.4.0   #
-  flutter_spinkit: ^5.1.0               #
-  image_picker: ^0.8.4+11               # ios, aos 처리
-  time_chart: ^0.3.2                    #
-  dotted_border: ^2.0.0+2               #
+  get: ^4.6.1
+  dio: ^4.0.6
+  intl: ^0.17.0
+  cross_file: ^0.3.2
+
+  # UI
+  d_button: ^0.0.10
+  time_chart: ^0.3.2
+  fluttertoast: ^8.0.8
+  image_picker: ^0.8.4+11
+  dotted_border: ^2.0.0+2
+  flutter_spinkit: ^5.1.0
+  flutter_slidable: ^1.2.0
+  weekday_selector: ^1.1.0
+  salomon_bottom_bar: ^3.3.0
+  flutter_signin_button: ^2.0.0
+  day_night_time_picker: ^1.0.5
+  flutter_local_notifications: ^9.4.0
 
   # FireBase
   cloud_firestore: ^3.1.8

@@ -59,9 +59,10 @@ class AlarmNotification {
         channelDescription: notiDesc,
         importance: Importance.max,
         playSound: true,
+        sound: RawResourceAndroidNotificationSound('sound'),
         priority: Priority.max
     );
-    var ios = IOSNotificationDetails();
+    var ios = IOSNotificationDetails( sound: 'sound.wav' );
     var detail = NotificationDetails(android: android, iOS: ios);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -98,7 +99,7 @@ class AlarmNotification {
     tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
 
     final now = tz.TZDateTime.now(tz.local);
-    final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, now.minute, now.second + 10);
+    final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, now.minute, now.second + 3);
     // final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, int.parse(time.split(':')[0]), int.parse(time.split(':')[1]));
 
     if (now.isBefore(alarm)) {
