@@ -1,9 +1,9 @@
 class AlarmInfo {
-  int index;
-  String time;
-  List<dynamic> day;
-  bool isRun = false;
-  String? document;
+  int index;              /// 알람 index
+  String time;            /// 시간
+  List<dynamic> day;      /// 일,월,화,수,목,금,토
+  bool isRun = false;     /// 알람 실행할지
+  String? document;       /// FireStore Doc Id
 
   AlarmInfo({
     required this.index,
