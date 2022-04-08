@@ -23,7 +23,8 @@ class InfoController extends GetxController {
 
   /// init NickName, info
   void initInfo() {
-    info = UserInfoLocal(name: dataBase.userInfoLocal.name, volume: dataBase.userInfoLocal.volume * 100);
+    info = UserInfoLocal(name: dataBase.userInfoLocal.name, volume: dataBase.userInfoLocal.volume * 100,
+      count: dataBase.userInfoLocal.count);
     editController.clear();
     update();
   }
@@ -56,7 +57,7 @@ class InfoController extends GetxController {
 
   /// Info 설정 값 FireStore에 저장
   void updateInfo() async {
-    await dataBase.updateInfo(UserInfoLocal(name: info.name, volume: info.volume / 100));
+    await dataBase.updateInfo(UserInfoLocal(name: info.name, volume: info.volume / 100, count: info.count));
     dataBase.userInfoLocal = info;
     update();
   }
