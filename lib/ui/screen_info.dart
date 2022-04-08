@@ -61,7 +61,7 @@ class ScreenInfo extends StatelessWidget {
                   )),
                   SizedBox(height: 20),
                   Text(
-                    '${controller.dataBase.userInfoLocal.name} 님의 총 수면기록 ${controller.dataBase.recordList.length}회',
+                    '${controller.dataBase.userInfoLocal.name} 님의 총 수면기록 ${controller.dataBase.userInfoLocal.count}회',
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                   SizedBox(height: 20),

@@ -11,7 +11,7 @@ class AlarmNotification {
   final plugin = FlutterLocalNotificationsPlugin();
 
   /// init Notification
-  void initNotiSetting() async {
+  Future initNotiSetting() async {
     final initSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     final initSettingsIOS = IOSInitializationSettings(
       requestSoundPermission: true,
@@ -30,52 +30,37 @@ class AlarmNotification {
     int hour = int.parse(alarm.time.split(':')[0]);
     int min  = int.parse(alarm.time.split(':')[1]);
 
-    String notiDesc = '$hour시 $min분';
-    String notiID = alarm.index.toString();
+    DateTime now = DateTime.now();
+    DateTime alarmTime = DateTime(now.year, now.month, now.day, hour, min);
+    bool timeCheck = DateTime.now().isBefore(alarmTime);
 
-    final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    /// 우선 요일 체크하고, 현재시간 & 알람시간 비교해서 알람시간이 후에인지 체크
+    if (checkDay(alarm) && timeCheck) {
+      String notiDesc = '$hour시 $min분';
+      String notiID = alarm.index.toString();
 
-    /*if (Platform.isIOS) {
-      final bool? result = await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
+      var android = AndroidNotificationDetails(
+          notiID,
+          Word.ALARM,
+          channelDescription: notiDesc,
+          importance: Importance.max,
+          playSound: true,
+          sound: RawResourceAndroidNotificationSound('sound'),
+          priority: Priority.max
       );
+      var ios = IOSNotificationDetails( sound: 'sound.wav' );
+      var detail = NotificationDetails( android: android, iOS: ios );
 
-      if (result != null && result) {
-        await flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-            ?.deleteNotificationChannelGroup(notiID);
-      }
-    }*/
-
-    var android = AndroidNotificationDetails(
-        notiID,
-        Word.ALARM,
-        channelDescription: notiDesc,
-        importance: Importance.max,
-        playSound: true,
-        sound: RawResourceAndroidNotificationSound('sound'),
-        priority: Priority.max
-    );
-    var ios = IOSNotificationDetails( sound: 'sound.wav' );
-    var detail = NotificationDetails(android: android, iOS: ios);
-
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-        alarm.index,
-        Word.ALARM,
-        notiDesc,
-        _setNotiTime(alarm.time),
-        detail,
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime);
-
-    // await flutterLocalNotificationsPlugin.periodicallyShow(  반복 알람
+      await plugin.zonedSchedule(
+          alarm.index,
+          Word.ALARM,
+          notiDesc,
+          _setNotiTime(alarm.time),
+          detail,
+          androidAllowWhileIdle: true,
+          uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime);
+    }
   }
 
   /// 알람 삭제하기
@@ -98,14 +83,21 @@ class AlarmNotification {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
 
-    final now = tz.TZDateTime.now(tz.local);
-    final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, now.minute, now.second + 3);
-    // final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, int.parse(time.split(':')[0]), int.parse(time.split(':')[1]));
+    final _time = time.split(':');
 
-    if (now.isBefore(alarm)) {
-      return alarm;
-    } else {
-      return alarm.add(Duration(days: 1));
-    }
+    final now = tz.TZDateTime.now(tz.local);
+    final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, int.parse(_time.first), int.parse(_time.last));
+
+    return alarm;
+  }
+
+  bool checkDay(AlarmInfo info) {
+    bool first = info.day.first;
+    info.day.removeAt(0);
+    info.day.add(first);
+
+    int num = DateTime.now().weekday - 1;
+
+    return info.day[num];
   }
 }

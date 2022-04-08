@@ -18,8 +18,7 @@ class FirebaseDataBase {
 
   Image? image;
   List<AlarmInfo> alarmList = [];
-  List<AlarmRecord> recordList = [];
-  UserInfoLocal userInfoLocal = UserInfoLocal(name: Word.INIT_NAME, volume: 0);
+  UserInfoLocal userInfoLocal = UserInfoLocal(name: Word.INIT_NAME, volume: 1, count: 0);
 
   /////////////////// Alarm //////////////////////////////////////////////////////////
 
@@ -109,30 +108,60 @@ class FirebaseDataBase {
   /////////////////// Record //////////////////////////////////////////////////////////
 
   /// FireStore Record List 가져오기
-  Future<void> getRecordList() async {
+  Future<List<AlarmRecord>> getRecordList() async {
     CollectionReference reference = _database.collection('${userInfo?.email}_record');
     return reference.get().then((snapshot) {
-      recordList.clear();
+      List<AlarmRecord> recordList = [];
       List<QueryDocumentSnapshot> list = snapshot.docs;
       for (QueryDocumentSnapshot row in list) {
         Map<String, dynamic> mapData = row.data() as Map<String, dynamic>;
         AlarmRecord record = AlarmRecord.fromJson(mapData);
         recordList.add(record);
       }
-      // recordList.sort((a, b) => a.index.compareTo(b.index));
+      recordList.sort((a, b) => a.sDate.compareTo(b.sDate));
+
+      return recordList;
+    });
+  }
+
+  /// FireStore Record List 가져오기
+  Future<AlarmRecord?> getRecordDate(String date) async {
+    DocumentReference reference = _database.collection('${userInfo?.email}_record').doc(date);
+    return reference.get().then((DocumentSnapshot snapshot) {
+      if (snapshot.exists) {
+        Map<String, dynamic> mapData = snapshot.data() as Map<String, dynamic>;
+        AlarmRecord record = AlarmRecord.fromJson(mapData);
+        return record;
+      } else {
+        return null;
+      }
     });
   }
 
   /// FireStore Record 등록하기
   Future<void> addRecord(String date, String time) async {
     CollectionReference reference = _database.collection('${userInfo?.email}_record');
-    return reference
-        .add({
-      'date': date,
-      'time': time
+    return reference.doc(date).set({  /// 당일 날짜로 Document Id 지정
+      'sDate': date,
+      'sTime': time,
     })
         .then((value) => print("Record Add"))
         .catchError((error) => print("Failed to add user: $error"));
+  }
+
+  /// FireStore Record 수정하기
+  Future<void> updateRecord(String date, String time) {
+    CollectionReference reference = _database.collection('${userInfo?.email}_record');
+    return reference.doc(date).update({
+      'eDate': date,
+      'eTime': time,
+    })
+        .then((value) => print("Record Update"))
+        .catchError((error) => print("Failed to update Record: $error"));
+  }
+
+  Stream<QuerySnapshot> getRecordReference() {
+    return _database.collection('users').snapshots();
   }
 
 
@@ -155,7 +184,8 @@ class FirebaseDataBase {
     CollectionReference reference = _database.collection('${userInfo?.email}_info');
     return reference.doc('info').set({    // info 라는 documentID 로 저장.
           'name': Word.INIT_NAME,
-          'volume': 1.0
+          'volume': 1.0,
+          'count': 0,
         })
         .then((value) => print("Info Add"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -166,7 +196,8 @@ class FirebaseDataBase {
     CollectionReference reference = _database.collection('${userInfo?.email}_info');
     return reference.doc('info').update({
       'name': info.name,
-      'volume': info.volume
+      'volume': info.volume,
+      'count': info.count
     })
         .then((value) => print("Info Update"))
         .catchError((error) => print("Failed to update Alarm: $error"));
