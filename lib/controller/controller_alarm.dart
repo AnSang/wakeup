@@ -66,7 +66,7 @@ class AlarmController extends GetxController {
     setShowProgress(true);
     AlarmInfo alarm = AlarmInfo(index: alarmList.length, time: alarmTimeString, day: daySelect.toList(), isRun: true);
     await dataBase.addAlarm(alarm);
-    await noti.dailyAtTimeNotification(alarm);
+    await noti.dailyAtTimeNotification(alarm, dataBase.userInfoLocal.sound);
     await dataBase.getAlarmList();
     setShowProgress(false);
     update();
@@ -99,7 +99,7 @@ class AlarmController extends GetxController {
     final check = alarmList[index].isRun = !alarmList[index].isRun;
     await dataBase.updateAlarm(alarmList[index]);
     if (check) {  // 알람이 활성화된 경우
-      noti.dailyAtTimeNotification(dataBase.alarmList[index]);
+      noti.dailyAtTimeNotification(dataBase.alarmList[index], dataBase.userInfoLocal.sound);
     } else {
       noti.deleteAlarm(index);
     }

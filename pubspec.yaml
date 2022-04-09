@@ -53,6 +53,7 @@ dependencies:
   salomon_bottom_bar: ^3.3.0
   flutter_signin_button: ^2.0.0
   day_night_time_picker: ^1.0.5
+  flutter_keyboard_visibility: ^5.2.0
   flutter_local_notifications: ^9.4.0
 
   # FireBase

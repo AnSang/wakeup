@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:wakeup/ui/screen_clock.dart';
 import 'package:wakeup/ui/screen_info.dart';
 import 'package:wakeup/ui/screen_record.dart';
-import 'package:wakeup/ui/screen_record2.dart';
 import 'package:wakeup/utils/firebase_database.dart';
 import 'package:wakeup/utils/notification.dart';
 
@@ -22,16 +21,16 @@ class MainController extends GetxController {
   @override
   void onInit() async {
     setShowProgress(true);
+    await dataBase.getInfo();       // UserInfoLocal
+    await dataBase.downloadFile();
     await noti.initNotiSetting();
     await dataBase.getAlarmList().then((value) {
       for (AlarmInfo row in dataBase.alarmList) {
         if (row.isRun) {    /// 실행하기로 되어있는지 체크
-          noti.dailyAtTimeNotification(row);
+          noti.dailyAtTimeNotification(row, dataBase.userInfoLocal.sound);
         }
       }
     });
-    await dataBase.getInfo();       // UserInfoLocal
-    await dataBase.downloadFile();
     setShowProgress(false);
     update();
     super.onInit();

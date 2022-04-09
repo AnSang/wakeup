@@ -103,14 +103,14 @@ class ScreenAlarm extends StatelessWidget {
                                             actions: [
                                               TextButton(
                                                   onPressed: () { Navigator.pop(context); },
-                                                  child: Text('취소')
+                                                  child: Text(Word.CANCEL)
                                               ),
                                               TextButton(
                                                   onPressed: () {
                                                     controller.delAlarm(alarm.index);
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text('확인')
+                                                  child: Text(Word.CONFIRM)
                                               )
                                             ],
                                           );
@@ -317,14 +317,14 @@ class ScreenAlarm extends StatelessWidget {
                           actions: [
                             TextButton(
                                 onPressed: () { Navigator.pop(context); },
-                                child: Text('취소')
+                                child: Text(Word.CANCEL)
                             ),
                             TextButton(
                                 onPressed: () {
                                   controller.delAlarm(index);
                                   Navigator.pop(context);
                                 },
-                                child: Text('확인')
+                                child: Text(Word.CONFIRM)
                             )
                           ],
                         );

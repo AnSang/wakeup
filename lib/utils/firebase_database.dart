@@ -18,7 +18,7 @@ class FirebaseDataBase {
 
   Image? image;
   List<AlarmInfo> alarmList = [];
-  UserInfoLocal userInfoLocal = UserInfoLocal(name: Word.INIT_NAME, volume: 1, count: 0);
+  UserInfoLocal userInfoLocal = UserInfoLocal(name: Word.INIT_NAME, record: '', sound: Word.SOUND_VALUE[0], count: 0);
 
   /////////////////// Alarm //////////////////////////////////////////////////////////
 
@@ -155,13 +155,11 @@ class FirebaseDataBase {
     return reference.doc(date).update({
       'eDate': date,
       'eTime': time,
-    })
-        .then((value) => print("Record Update"))
-        .catchError((error) => print("Failed to update Record: $error"));
-  }
-
-  Stream<QuerySnapshot> getRecordReference() {
-    return _database.collection('users').snapshots();
+    }).then((value) async {
+      userInfoLocal.count++;
+      await updateInfo(userInfoLocal);
+      print("Record Update");
+    }).catchError((error) => print("Failed to update Record: $error"));
   }
 
 
@@ -184,7 +182,8 @@ class FirebaseDataBase {
     CollectionReference reference = _database.collection('${userInfo?.email}_info');
     return reference.doc('info').set({    // info 라는 documentID 로 저장.
           'name': Word.INIT_NAME,
-          'volume': 1.0,
+          'record': '',
+          'sound': Word.SOUND_VALUE[0],
           'count': 0,
         })
         .then((value) => print("Info Add"))
@@ -196,7 +195,8 @@ class FirebaseDataBase {
     CollectionReference reference = _database.collection('${userInfo?.email}_info');
     return reference.doc('info').update({
       'name': info.name,
-      'volume': info.volume,
+      'record': info.record,
+      'sound': info.sound,
       'count': info.count
     })
         .then((value) => print("Info Update"))

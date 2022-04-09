@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,87 +7,52 @@ import '../utils/firebase_database.dart';
 import 'controller_main.dart';
 
 class RecordController extends GetxController {
-  DateTime showDate = DateTime.now();  // 보여줄 날짜 (년,월)
   List<AlarmRecord> recordList = [];
   List<DateTimeRange> showItems = [];
-  AlarmRecord? toDay;
   bool check = false;
   bool btnStart = false;
   bool btnEnd = false;
-
-  /*List<DateTimeRange> showItems = [
-    DateTimeRange(start: DateTime(2022, 4, 25, 21, 43),end: DateTime(2022, 4, 26, 5, 42)),
-    DateTimeRange(start: DateTime(2022, 4, 14, 11, 43),end: DateTime(2022, 4, 14, 15, 42)),
-    DateTimeRange(start: DateTime(2022, 4, 13, 4, 53), end: DateTime(2022, 4, 13, 11, 22)),
-    DateTimeRange(start: DateTime(2022, 4, 12, 6, 0), end: DateTime(2022, 4, 12, 14, 22)),
-    DateTimeRange(start: DateTime(2022, 4, 11, 4, 53), end: DateTime(2022, 4, 11, 11, 53)),
-    DateTimeRange(start: DateTime(2022, 4, 5, 13, 0), end: DateTime(2022, 4, 6, 1, 22)),
-  ];*/
-
 
   FirebaseDataBase dataBase = Get.find<MainController>().dataBase;
 
   @override
   void onInit() async {
-    String date = DateFormat('yyyy.M.d').format(DateTime.now());
     recordList = await dataBase.getRecordList(); // 기록 data 가져오기
-    toDay = await dataBase.getRecordDate(date);
-    setButtonBool();
-    showItems = getMonthItem();
+    await setButtonBool();
+    showItems = getItem();
     check = true;
     update();
     super.onInit();
   }
 
-  void plusMonth() {
-    showDate = DateTime(showDate.year, showDate.month + 1);
-    showItems.clear();
-    showItems = getMonthItem();
-    update();
-  }
-
-  void minMonth() {
-    showDate = DateTime(showDate.year, showDate.month - 1);
-    showItems.clear();
-    showItems = getMonthItem();
-    update();
-  }
-
+  /// 수면시작 버튼 event
   Future startRecord() async {  // 수면 시작
     setShowProgress(true);
     DateTime now = DateTime.now();
     String date = '${now.year}.${now.month}.${now.day}';
     String time = '${now.hour}:${now.minute}';
+    dataBase.userInfoLocal.record = date;
 
     await dataBase.addRecord(date, time);
-    toDay = AlarmRecord(sDate: date, sTime: time, eDate: null, eTime: null);
-    setButtonBool();
+    await dataBase.updateInfo(dataBase.userInfoLocal);
+    await setButtonBool();
     setShowProgress(false);
     update();
   }
 
+  /// 수면종료 버튼 event
   Future endRecord() async {  // 수면 종료
     setShowProgress(true);
     DateTime now = DateTime.now();
     String date = '${now.year}.${now.month}.${now.day}';
     String time = '${now.hour}:${now.minute}';
+    dataBase.userInfoLocal.record = '';   // 수면 종료 처리
 
     await dataBase.updateRecord(date, time);
-    toDay?.eDate = date;
-    toDay?.eTime = time;
-    setButtonBool();
+    await dataBase.updateInfo(dataBase.userInfoLocal);
+    await setButtonBool();
     setShowProgress(false);
     update();
-  }
-
-  Future getDayRecord() async {
-    DateTime now = DateTime.now();
-    String date = '${now.year}.${now.month}.${now.day}';
-    await dataBase.getRecordDate(date);
-  }
-
-  Stream<QuerySnapshot> getRecordReference() {
-    return dataBase.getRecordReference();
   }
 
   /// progress Indicator ON & OFF
@@ -103,24 +67,30 @@ class RecordController extends GetxController {
   }
 
   /// 수면시작, 수면종료 버튼 활성화
-  void setButtonBool() {
-    if (toDay == null) {  // 수면시작 전
-      btnStart = true;
-      btnEnd = false;
-    } else if (toDay?.eDate == null) {  // 수면시작 후
-      btnStart = false;
-      btnEnd = true;
-    } else {  // 하루의 기록 끝난경우
-      btnStart = false;
-      btnEnd = false;
+  Future setButtonBool() async {
+    DateTime now = DateTime.now();
+    String date = '${now.year}.${now.month}.${now.day}';
+    AlarmRecord? toDay = await dataBase.getRecordDate(date);
+
+    if (toDay == null) {                            // 그날의 알람기록이 없을때
+      if (dataBase.userInfoLocal.record.isEmpty) {  // 기록도 없고 기록중이지 않을때
+        btnStart = true; btnEnd = false;
+      } else {                                      // 그날의 알람기록은 없으나 현재 수면 체크중인 데이터가 있는 경우
+        btnStart = false; btnEnd = true;
+      }
+    } else {                                        // 그날의 알람기록이 있는 경우
+      if (dataBase.userInfoLocal.record.isEmpty) {  // 그날에 알람기록을 마친 경우
+        btnStart = false; btnEnd = false;
+      } else {                                      // 아마 대부분이 그날의 알람기록을 종료하는 경우
+        btnStart = false; btnEnd = true;
+      }
     }
   }
 
-  List<DateTimeRange> getMonthItem() {
+  List<DateTimeRange> getItem() {
     List<DateTimeRange> list = [];
-
     for (AlarmRecord row in recordList) {
-      if (row.sDate.contains(getMonth(showDate)) && row.eDate != null && row.eTime != null) {
+      if (row.eDate != null && row.eTime != null) {
         List<String> _sDate = row.sDate.split('.');
         List<String> _sTime = row.sTime.split(':');
         List<String> _eDate = row.eDate!.split('.');
@@ -131,9 +101,7 @@ class RecordController extends GetxController {
         list.add(DateTimeRange(start: start, end: end));
       }
     }
-
     list.sort((a, b) => b.start.compareTo(a.start));
-
     return list;
   }
 }

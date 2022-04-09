@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3578543D27FD8A3E0070CA84 /* sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3578543C27FD8A3E0070CA84 /* sound.wav */; };
+		35A1B36328015C1B00FF9DFB /* sound3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 35A1B35E28015C1A00FF9DFB /* sound3.wav */; };
+		35A1B36428015C1B00FF9DFB /* sound1 .wav in Resources */ = {isa = PBXBuildFile; fileRef = 35A1B35F28015C1A00FF9DFB /* sound1 .wav */; };
+		35A1B36528015C1B00FF9DFB /* sound4.wav in Resources */ = {isa = PBXBuildFile; fileRef = 35A1B36028015C1B00FF9DFB /* sound4.wav */; };
+		35A1B36628015C1B00FF9DFB /* sound2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 35A1B36128015C1B00FF9DFB /* sound2.wav */; };
+		35A1B36728015C1B00FF9DFB /* sound5.wav in Resources */ = {isa = PBXBuildFile; fileRef = 35A1B36228015C1B00FF9DFB /* sound5.wav */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -33,6 +38,11 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		3578543C27FD8A3E0070CA84 /* sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound.wav; sourceTree = "<group>"; };
+		35A1B35E28015C1A00FF9DFB /* sound3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound3.wav; sourceTree = "<group>"; };
+		35A1B35F28015C1A00FF9DFB /* sound1 .wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "sound1 .wav"; sourceTree = "<group>"; };
+		35A1B36028015C1B00FF9DFB /* sound4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound4.wav; sourceTree = "<group>"; };
+		35A1B36128015C1B00FF9DFB /* sound2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound2.wav; sourceTree = "<group>"; };
+		35A1B36228015C1B00FF9DFB /* sound5.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound5.wav; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +70,11 @@
 		3578543B27FD8A270070CA84 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				35A1B35F28015C1A00FF9DFB /* sound1 .wav */,
+				35A1B36128015C1B00FF9DFB /* sound2.wav */,
+				35A1B35E28015C1A00FF9DFB /* sound3.wav */,
+				35A1B36028015C1B00FF9DFB /* sound4.wav */,
+				35A1B36228015C1B00FF9DFB /* sound5.wav */,
 				3578543C27FD8A3E0070CA84 /* sound.wav */,
 			);
 			name = Resources;
@@ -171,9 +186,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35A1B36728015C1B00FF9DFB /* sound5.wav in Resources */,
 				3578543D27FD8A3E0070CA84 /* sound.wav in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
+				35A1B36428015C1B00FF9DFB /* sound1 .wav in Resources */,
+				35A1B36528015C1B00FF9DFB /* sound4.wav in Resources */,
+				35A1B36328015C1B00FF9DFB /* sound3.wav in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
+				35A1B36628015C1B00FF9DFB /* sound2.wav in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
