@@ -23,21 +23,21 @@ class FirebaseDataBase {
   /////////////////// Alarm //////////////////////////////////////////////////////////
 
   /// FireStore Alarm List 가져오기
-  Future<void> getAlarmList() async {
+  Future<List<AlarmInfo>> getAlarmList() async {
     CollectionReference reference = _database.collection('${userInfo?.email}');
     return reference.get().then((snapshot) {
-      alarmList.clear();
+      List<AlarmInfo> _alarmList = [];
       List<QueryDocumentSnapshot> list = snapshot.docs;
       for (QueryDocumentSnapshot row in list) {
         Map<String, dynamic> mapData = row.data() as Map<String, dynamic>;
         AlarmInfo info = AlarmInfo.fromJson(mapData);
         info.document = row.id; // document ID 추가
-        alarmList.add(info);
+        _alarmList.add(info);
       }
-      alarmList.sort((a, b) => a.index.compareTo(b.index));
+      _alarmList.sort((a, b) => a.index.compareTo(b.index));
+      return _alarmList;
     });
   }
-
 
   /// FireStore Alarm 등록하기
   Future<void> addAlarm(AlarmInfo info) async {
@@ -150,9 +150,9 @@ class FirebaseDataBase {
   }
 
   /// FireStore Record 수정하기
-  Future<void> updateRecord(String date, String time) {
+  Future<void> updateRecord(String docId, String date, String time) {
     CollectionReference reference = _database.collection('${userInfo?.email}_record');
-    return reference.doc(date).update({
+    return reference.doc(docId).update({
       'eDate': date,
       'eTime': time,
     }).then((value) async {
@@ -166,13 +166,15 @@ class FirebaseDataBase {
   /////////////////// Info //////////////////////////////////////////////////////////
 
   /// FireStore Alarm List 가져오기
-  Future<void> getInfo() async {
-    FirebaseFirestore.instance.collection('${userInfo?.email}_info').doc('info').get().then((DocumentSnapshot snapshot) {
+  Future<UserInfoLocal> getInfo() async {
+    DocumentReference reference = _database.collection('${userInfo?.email}_info').doc('info');
+    return reference.get().then((DocumentSnapshot snapshot) {
       if (snapshot.exists) {
         Map<String, dynamic> mapData = snapshot.data() as Map<String, dynamic>;
-        userInfoLocal = UserInfoLocal.fromJson(mapData);
+        return UserInfoLocal.fromJson(mapData);
       } else {
         addInfo();
+        return UserInfoLocal(name: Word.INIT_NAME, record: '', sound: Word.SOUND_VALUE[0], count: 0);
       }
     });
   }
@@ -188,6 +190,16 @@ class FirebaseDataBase {
         })
         .then((value) => print("Info Add"))
         .catchError((error) => print("Failed to add user: $error"));
+  }
+
+  /// FireStore Info 등록하기 init
+  Future<UserInfoLocal> addInfo2() async {
+    UserInfoLocal info = UserInfoLocal(name: Word.INIT_NAME, record: '', sound: Word.SOUND_VALUE[0], count: 0);
+    CollectionReference reference = _database.collection('${userInfo?.email}_info');
+    return reference.doc('info').set(info).then((value) {
+      return info;
+    })
+        .catchError((error) => print("Failed to add user: $error"));;
   }
 
   /// FireStore Info 이름 수정하기
