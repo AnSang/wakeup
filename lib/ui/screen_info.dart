@@ -73,7 +73,9 @@ class ScreenInfo extends StatelessWidget {
                         SizedBox(height: 20),
                         InfoButton(btnNum: 1, btnName: '알람 소리', controller: controller ),
                         SizedBox(height: 20),
-                        InfoButton(btnNum: 2, btnName: '로그 아웃', controller: controller ),
+                        InfoButton(btnNum: 2, btnName: '수면시작 기록 삭제', controller: controller ),
+                        SizedBox(height: 20),
+                        InfoButton(btnNum: 3, btnName: '로그아웃', controller: controller ),
                       ],
                     ),
                   )
