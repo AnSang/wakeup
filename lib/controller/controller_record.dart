@@ -46,9 +46,9 @@ class RecordController extends GetxController {
     DateTime now = DateTime.now();
     String date = '${now.year}.${now.month}.${now.day}';
     String time = '${now.hour}:${now.minute}';
-    dataBase.userInfoLocal.record = '';   // 수면 종료 처리
 
-    await dataBase.updateRecord(date, time);
+    await dataBase.updateRecord(dataBase.userInfoLocal.record, date, time);
+    dataBase.userInfoLocal.record = '';   // 수면 종료 처리
     await dataBase.updateInfo(dataBase.userInfoLocal);
     await setButtonBool();
     setShowProgress(false);

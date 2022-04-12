@@ -67,7 +67,7 @@ class AlarmController extends GetxController {
     AlarmInfo alarm = AlarmInfo(index: alarmList.length, time: alarmTimeString, day: daySelect.toList(), isRun: true);
     await dataBase.addAlarm(alarm);
     await noti.dailyAtTimeNotification(alarm, dataBase.userInfoLocal.sound);
-    await dataBase.getAlarmList();
+    dataBase.alarmList = await dataBase.getAlarmList();
     setShowProgress(false);
     update();
   }
@@ -77,9 +77,9 @@ class AlarmController extends GetxController {
     setShowProgress(true);
     await dataBase.deleteAlarm(index);
     await noti.deleteAlarm(index);
-    await dataBase.getAlarmList();
+    dataBase.alarmList = await dataBase.getAlarmList();
     await dataBase.sortIndexAlarm();
-    await dataBase.getAlarmList();
+    dataBase.alarmList = await dataBase.getAlarmList();
     setShowProgress(false);
     update();
   }
