@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:wakeup/models/user_info.dart';
 import 'package:wakeup/utils/strings.dart';
 import '../models/alarm_info.dart';
 
@@ -68,6 +69,11 @@ class AlarmNotification {
     await plugin.cancel(alarmId);
   }
 
+  /// 알람 전체 삭제하기
+  Future deleteAllAlarm() async {
+    await plugin.cancelAll();
+  }
+
   /// 시간지정하기
   tz.TZDateTime _setNotiTime(String time) {
     tz.initializeTimeZones();
@@ -95,15 +101,16 @@ class AlarmNotification {
 
   /// notification 눌렀을때
   Future onSelectNotification(String? payload) async {
-
-    //Todo: 눌렀을때 toDay
-
-
-    DateTime now = DateTime.now();
-    String date = '${now.year}.${now.month}.${now.day}';
-    String time = '${now.hour}:${now.minute}';
-
     final FirebaseDataBase dataBase = FirebaseDataBase();
-    dataBase.updateRecord(date, time);
+    UserInfoLocal info = await dataBase.getInfo();
+
+    if (info.record.isEmpty) {  // 기록중인 데이터가 없다면 아무것도 안함
+      return;
+    } else {
+      DateTime now = DateTime.now();
+      String date = '${now.year}.${now.month}.${now.day}';
+      String time = '${now.hour}:${now.minute}';
+      dataBase.updateRecord(info.record, date, time);
+    }
   }
 }
