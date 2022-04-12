@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
-import 'package:wakeup/ui/screen_main.dart';
+import 'package:wakeup/ui/btn_login.dart';
+import 'package:wakeup/ui/screen_terms.dart';
 import 'package:wakeup/utils/strings.dart';
 
 import '../controller/controller_login.dart';
@@ -31,114 +32,46 @@ class ScreenLogin extends StatelessWidget {
                   )
               ),
 
-              Align(
-                alignment: Alignment(0 , 1),
-                child: MaterialButton(
-                  onPressed: () { controller.loginGoogle(); },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 10 * 6,
-                    height: 40,
-                    margin: EdgeInsets.only(bottom: 200),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              blurRadius: 15,
-                              spreadRadius: 5
-                          )
-                        ]
-                    ),
-                    child: SignInButton(
-                       Buttons.Google,
-                       onPressed: (){ controller.loginGoogle(); },
-                    )
-                  ),
-                ),
-              ),
 
               //////////// Login Button  ////////
               Align(
                 alignment: Alignment(0 , 1),
-                child: MaterialButton(
-                  onPressed: () { controller.loginGoogle(); },
-                  child: Container(
-                      width: MediaQuery.of(context).size.width / 10 * 6,
-                      height: 40,
-                      margin: EdgeInsets.only(bottom: 150),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 15,
-                                spreadRadius: 5
-                            )
-                          ]
-                      ),
-                      child: SignInButton(
-                        Buttons.FacebookNew,
-                        onPressed: (){ controller.loginFacebook(); },
-                      )
-                  ),
-                ),
-              ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    LoginButton(buttons: Buttons.Google, onPressed: (){ controller.loginGoogle(); } ),
+                    LoginButton(buttons: Buttons.FacebookNew, onPressed: (){ controller.loginFacebook(); } ),
+                    LoginButton(buttons: Buttons.GitHub, onPressed: (){ controller.loginGithub(context); } ),
+                    LoginButton(buttons: Buttons.Reddit, onPressed: (){  } ),
 
-              Align(
-                alignment: Alignment(0 , 1),
-                child: MaterialButton(
-                  onPressed: () { controller.loginGoogle(); },
-                  child: Container(
-                      width: MediaQuery.of(context).size.width / 10 * 6,
-                      height: 40,
-                      margin: EdgeInsets.only(bottom: 100),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 15,
-                                spreadRadius: 5
-                            )
-                          ]
-                      ),
-                      child: SignInButton(
-                        Buttons.GitHub,
-                        onPressed: (){ controller.loginGithub(context); },
-                      )
-                  ),
+                    Material(
+                      color: Colors.transparent,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Checkbox(
+                                side: BorderSide(color: Colors.white),
+                                activeColor: Colors.lightBlueAccent,
+                                value: controller.chkTerms,
+                                onChanged: (value) => controller.setTerms(value)
+                              ),
+                              Text(Word.TERMS_AGREE, style: TextStyle( color: Colors.white, fontSize: 14 ) ),
+                              SizedBox( width: 10 ),
+                              TextButton(
+                                child: Text(Word.TERMS_SHOW,
+                                  style: TextStyle( fontSize: 14, fontWeight: FontWeight.bold ),
+                                ),
+                                onPressed: () { Get.to(InfoTerms()); }
+                              )
+                            ]
+                        )
+                    ),
+                    SizedBox( height: 50 )
+                  ],
                 ),
-              ),
-
-              Align(
-                alignment: Alignment(0 , 1),
-                  child: Container(
-                     width: MediaQuery.of(context).size.width / 10 * 6,
-                     height: 40,
-                     margin: EdgeInsets.only(bottom: 50),
-                     decoration: BoxDecoration(
-                         color: Colors.white,
-                         borderRadius: BorderRadius.circular(15),
-                         boxShadow: [
-                           BoxShadow(
-                               color: Colors.black.withOpacity(0.3),
-                               blurRadius: 15,
-                               spreadRadius: 5
-                           )
-                         ]
-                     ),
-                     child: SignInButton(
-                       Buttons.Reddit,
-                       onPressed: (){
-                         Get.off(() => ScreenMain(), transition: Transition.native);
-                         // controller.loginKakao();
-                         },
-                     )
-                  ),
-                )
+              )
             ],
           );
         }
