@@ -8,8 +8,9 @@ import '../utils/firebase_auth.dart';
 class LoginController extends GetxController {
   static const key = 'LoginInfo';
 
-  var autoLogin = false;
-  var showScreenIndex = 0;
+  bool autoLogin = false;
+  bool chkTerms = false;
+  int showScreenIndex = 0;
 
   FirebaseAuthentication auth = FirebaseAuthentication();
 
@@ -49,6 +50,12 @@ class LoginController extends GetxController {
         Get.off(() => ScreenMain());
       }
     });
+  }
+
+  /// 개인정보약관 체크
+  void setTerms(bool? value) {
+    value == null ? chkTerms = false : chkTerms = value;
+    update();
   }
 
   /*void loginKakao() {
