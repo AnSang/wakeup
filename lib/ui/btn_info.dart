@@ -1,19 +1,19 @@
+import 'package:flutter/material.dart';
+import 'package:wakeup/main.dart';
+import 'package:wakeup/utils/strings.dart';
+import 'package:wakeup/controller/controller_info.dart';
+import 'package:get/get.dart';
 import 'package:d_button/d_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:wakeup/controller/controller_info.dart';
-import 'package:wakeup/utils/strings.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class InfoButton extends StatelessWidget {
-  // final BuildContext context;
   final InfoController controller;
   final int btnNum;
   final String btnName;
 
   InfoButton({Key? key,
-    // required this.context,
     required this.controller,
     required this.btnNum,
     required this.btnName,
@@ -109,30 +109,12 @@ class InfoButton extends StatelessWidget {
                 }
             );
           } else if ( btnNum == 2 ) {
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0) ),
-                    content: Text(Word.LOGOUT),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(Word.CANCEL)),
-                      TextButton(
-                          onPressed: () {
-                            FirebaseAuth.instance.signOut();
-                            // controller.off
-                            // Get.off(Authentication());
-                          },
-                          child: Text(Word.CONFIRM))
-                    ],
-                  );
-                }
-            );
+            /// Record 정보가 없으면 삭제할일이 없으니 비활성화
+            controller.dataBase.userInfoLocal.record.isEmpty ?
+                  Fluttertoast.showToast(msg: Word.DELETE_RECORD_X, backgroundColor: Colors.white, textColor: Colors.black)
+                : deleteRecord(context);
+          } else if ( btnNum == 3 ) {
+            logOutDialog(context);
           }
         }
     );
@@ -225,6 +207,55 @@ class InfoButton extends StatelessWidget {
             }
         ),
       ),
+    );
+  }
+
+  void deleteRecord(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0) ),
+            content: Text(Word.DELETE_RECORD_O),
+            actions: [
+              TextButton(
+                  onPressed: () { Navigator.pop(context); },
+                  child: Text(Word.CANCEL)),
+              TextButton(
+                  onPressed: () {
+                    controller.dataBase.userInfoLocal.record = '';
+                    controller.dataBase.updateInfo(controller.dataBase.userInfoLocal);
+                    controller.update();
+                  },
+                  child: Text(Word.CONFIRM))
+            ],
+          );
+        }
+    );
+  }
+
+  void logOutDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0) ),
+            content: Text(Word.LOGOUT),
+            actions: [
+              TextButton(
+                  onPressed: () { Navigator.pop(context); },
+                  child: Text(Word.CANCEL)),
+              TextButton(
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                    Get.off(Authentication());
+                  },
+                  child: Text(Word.CONFIRM))
+            ],
+          );
+        }
     );
   }
 }
