@@ -37,11 +37,11 @@ class MainController extends GetxController {
     super.onInit();
   }
 
-  /*@override
+  @override
   void onReady() async {
     await service.initializeService();
     super.onReady();
-  }*/
+  }
 
   void setScreen(int index) {
     showScreenIndex = index;

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
@@ -26,11 +25,11 @@ class BackGroundService {
     );
     service.startService();
   }
+}
 
-  bool onIosBackground(ServiceInstance service) {
-    print('FLUTTER BACKGROUND FETCH');
-    return true;
-  }
+bool onIosBackground(ServiceInstance service) {
+  print('FLUTTER BACKGROUND FETCH');
+  return true;
 }
 
 Future onStart(ServiceInstance service) async {
@@ -45,10 +44,10 @@ Future onStart(ServiceInstance service) async {
   }
 
   /// 처리할 함수들 여기 작성
-  Timer.periodic(const Duration(seconds: 20), (timer) async {
+  Timer.periodic(const Duration(hours: 1), (timer) async {
     if (service is AndroidServiceInstance) {
       service.setForegroundNotificationInfo(
-        title: "알람 타이틀",
+        title: "알람 프로그램 실행중",
         content: "알람 컨텐츠",
       );
     }
@@ -56,7 +55,6 @@ Future onStart(ServiceInstance service) async {
     await noti.deleteAllAlarm(); // 알람 전체 삭제
     UserInfoLocal info = await dataBase.getInfo();
     List<AlarmInfo> _list = await dataBase.getAlarmList();
-
 
     for (AlarmInfo alarm in _list) {
       if (alarm.isRun) {
