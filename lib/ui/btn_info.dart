@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:wakeup/main.dart';
 import 'package:wakeup/utils/strings.dart';
 import 'package:wakeup/controller/controller_info.dart';
@@ -249,6 +250,7 @@ class InfoButton extends StatelessWidget {
                   child: Text(Word.CANCEL)),
               TextButton(
                   onPressed: () {
+                    FlutterBackgroundService().invoke('stop');
                     FirebaseAuth.instance.signOut();
                     Get.off(Authentication());
                   },

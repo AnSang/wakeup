@@ -39,19 +39,23 @@ Future onStart(ServiceInstance service) async {
   noti.initNotiSetting();
 
   if (service is AndroidServiceInstance) {
-    // service.setAsForegroundService();
     service.setAsBackgroundService();
+
+    service.on('fg').listen((event) {
+      service.setAsForegroundService();
+    });
+
+    service.on('bg').listen((event) {
+      service.setAsBackgroundService();
+    });
   }
+
+  service.on('stop').listen((event) {
+    service.stopSelf();
+  });
 
   /// 처리할 함수들 여기 작성
   Timer.periodic(const Duration(hours: 1), (timer) async {
-    if (service is AndroidServiceInstance) {
-      service.setForegroundNotificationInfo(
-        title: "알람 프로그램 실행중",
-        content: "알람 컨텐츠",
-      );
-    }
-
     await noti.deleteAllAlarm(); // 알람 전체 삭제
     UserInfoLocal info = await dataBase.getInfo();
     List<AlarmInfo> _list = await dataBase.getAlarmList();
