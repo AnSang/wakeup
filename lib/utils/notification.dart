@@ -36,7 +36,7 @@ class AlarmNotification {
     bool timeCheck = DateTime.now().isBefore(alarmTime);
 
     /// 우선 요일 체크하고, 현재시간 & 알람시간 비교해서 알람시간이 후에인지 체크
-    // if (checkDay(alarm) && timeCheck) {
+    if (checkDay(alarm) && timeCheck) {
       String notiDesc = '$hour시 $min분';
       String notiID = alarm.index.toString();
 
@@ -61,7 +61,7 @@ class AlarmNotification {
           androidAllowWhileIdle: true,
           uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime);
-    // }
+    }
   }
 
   /// 알람 삭제하기
@@ -82,9 +82,8 @@ class AlarmNotification {
     final _time = time.split(':');
 
     final now = tz.TZDateTime.now(tz.local);
-    // final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, int.parse(_time.first), int.parse(_time.last));
-
-    final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, now.minute, now.second + 3);
+    final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, int.parse(_time.first), int.parse(_time.last));
+    // final alarm = tz.TZDateTime(tz.local, now.year, now.month, now.day, now.hour, now.minute, now.second + 3);
 
     return alarm;
   }
