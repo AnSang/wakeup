@@ -7,7 +7,6 @@ import '../utils/firebase_database.dart';
 import 'controller_main.dart';
 
 class InfoController extends GetxController {
-  CrossFadeState isShow = CrossFadeState.showFirst;
   int selBtnNum = -1;
   FirebaseDataBase dataBase = Get.find<MainController>().dataBase;
   TextEditingController editController = TextEditingController();
@@ -30,16 +29,6 @@ class InfoController extends GetxController {
         sound: dataBase.userInfoLocal.sound,
         count: dataBase.userInfoLocal.count);
     editController.clear();
-    update();
-  }
-
-  /// isShowPopupWindow 반전   on/off
-  void setPopupOff() {
-    isShow = CrossFadeState.showFirst;
-    update();
-  }
-  void setPopupOn() {
-    isShow = CrossFadeState.showSecond;
     update();
   }
 
